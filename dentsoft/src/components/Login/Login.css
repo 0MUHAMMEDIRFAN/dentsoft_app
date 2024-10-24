@@ -1,0 +1,89 @@
+.loginContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #E5E5E5;
+    font-family: "Poppins";
+    font-weight: 700;
+    height: 100vh;
+    gap: 30px;
+}
+
+.loginContainer .loginForm h1 {
+    font-size: 22px;
+}
+.loginContainer .loginForm {
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: 431px;
+    width: 100%;
+    padding: 46.5px;
+    box-sizing: border-box;
+    gap: 16px;
+    border-radius: 18px;
+
+}
+
+.loginContainer .loginForm div {
+    position: relative;
+    max-width: 338px;
+    box-sizing: border-box;
+}
+
+.loginContainer .loginForm div input {
+    height: 45px;
+    box-sizing: border-box;
+    padding: 0;
+    width: 338px;
+    border-radius: 6px;
+    border: 1px solid #DFDFDF;
+    font-weight: 500;
+    color: #777777;
+    font-size: 12px;
+    line-height: 18px;
+    z-index: 10;
+    outline: none;
+    padding-left: 17px;
+}
+
+.loginContainer .loginForm div input:not([value=""])~p,
+.loginContainer .loginForm div input:focus~p {
+    background: #fff;
+    color: #000;
+    top: 0;
+}
+
+
+.loginContainer .loginForm div input~p {
+    position: absolute;
+    top: 50%;
+    pointer-events: none;
+    margin-left: 17px;
+    transform: translate(0, -50%);
+    font-size: 12px;
+    line-height: 18px;
+    font-weight: 500;
+    color: #777777;
+    left: 0;
+    transition: all ease .1s;
+}
+
+.loginContainer .loginForm .source {
+    justify-content: space-between;
+    font-size: 12px;
+    display: flex;
+    width: 100%;
+
+}
+
+.loginContainer .loginForm .source .login-error {
+    color: red;
+    font-size: 10px;
+    font-weight: 500;
+}
+.loginContainer .loginForm a {
+    color: #373434;
+}
