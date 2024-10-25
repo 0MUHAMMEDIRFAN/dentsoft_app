@@ -19,7 +19,7 @@ function App() {
 					<Route path="/home" element={<Home />} exact />
 					{/* <Route path="/home" element={<Overview/>} exact /> */}
 					{/* <Route path="/patient/overview" element={<Overview />} exact /> */}
-					<Route path="/scope" element={<Overview />} exact />
+					<Route path="/dentsoft" element={<Overview />} exact />
 					{/* </Route> */}
 				</Routes>
 			</FrappeProvider>

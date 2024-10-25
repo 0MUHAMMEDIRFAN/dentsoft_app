@@ -15,7 +15,7 @@ app_license = "mit"
 # 	{
 # 		"name": "dentsoft_app",
 # 		"logo": "/assets/dentsoft_app/logo.png",
-# 		"title": "Scope App",
+# 		"title": "dentsoft App",
 # 		"route": "/dentsoft_app",
 # 		"has_permission": "dentsoft_app.api.permission.has_app_permission"
 # 	}
