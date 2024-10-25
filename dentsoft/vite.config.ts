@@ -16,7 +16,7 @@ export default defineConfig({
 		}
 	},
 	build: {
-		outDir: '../scope_app/public/scope',
+		outDir: '../dentsoft_app/public/scope',
 		emptyOutDir: true,
 		target: 'es2015',
 	},

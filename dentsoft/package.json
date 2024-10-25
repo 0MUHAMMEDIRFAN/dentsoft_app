@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build --base=/assets/scope_app/scope/ && yarn copy-html-entry",
+    "build": "vite build --base=/assets/dentsoft_app/dentsoft/ && yarn copy-html-entry",
     "lint": "eslint .",
     "preview": "vite preview",
-    "copy-html-entry": "cp ../scope_app/public/scope/index.html ../scope_app/www/scope.html"
+    "copy-html-entry": "cp ../dentsoft_app/public/scope/index.html ../dentsoft_app/www/dentsoft.html"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",

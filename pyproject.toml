@@ -1,5 +1,5 @@
 [project]
-name = "scope_app"
+name = "dentsoft_app"
 authors = [
     { name = "Muhammed Irfan", email = "irfan@whitejson.com"}
 ]
