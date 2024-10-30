@@ -1,9 +1,13 @@
 import { createContext } from "react"
 import { toast } from "react-toastify"
 
-export const ToastContext = createContext({})
+export interface ToastContextType {
+    notify: (message: string, type: string) => void;
+}
 
-export const ToastContextProvider = ({ children }) => {
+export const ToastContext = createContext<ToastContextType>({} as ToastContextType);
+
+export const ToastContextProvider = ({ children }: any) => {
     const notify = (message: string, type: string) => {
         switch (type) {
             case "success": toast.success(message);

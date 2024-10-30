@@ -1,11 +1,67 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContext } from "./ToastContext";
-import moment from "moment";
+// import moment from "moment";
+import { Patient } from "../types/types";
 
-export const AppContext = createContext({});
+export interface AppContextType {
+  location: any;
+  userDetails: any;
+  setUserDetails: any;
+  sidebarCollapse: any;
+  setSidebarCollapse: any;
+  viewMedical: any;
+  setViewMedical: any;
+  viewDocument: any;
+  setViewDocument: any;
+  addDocumentClicked: any;
+  setAddDocumentClicked: any;
+  addMedicalClicked: any;
+  setAddMedicalClicked: any;
+  addPatientForm: any;
+  setAddPatientForm: any;
+  medicalForm: any;
+  setMedicalForm: any;
+  documentForm: any;
+  setDocumentForm: any;
+  medicalFormId: any;
+  setMedicalFormId: any;
+  DocumentId: any;
+  setDocumentId: any;
+  addPaymentClicked: any;
+  setAddPaymentClicked: any;
+  viewPayment: any;
+  setViewPayment: any;
+  user: any;
+  setUser: any;
+  selectedPatient: any;
+  setSelectedPatient: any;
+  filterSidebarItems: any;
+  selectPatient: any;
+  deselectPatient: any;
+  handleEditPatient: any;
+  sidebarItems: any;
+  setSidebarItems: any;
+  searchText: any;
+  setSearchText: any;
+  searchValue: any;
+  setSearchValue: any;
+  patientButton: any;
+  setPatientButton: any;
+  isAddPatientOpen: any;
+  setIsAddPatientOpen: any;
+  selectedPatientId: any;
+  setSelectedPatientId: any;
+  selectSidebarItem: any;
+  selectedTeeth: any;
+  setSelectedTeeth: any;
+  selectedAppointment: any;
+  setSelectedAppointment: any;
+}
 
-export const AppContextProvider = ({ children }) => {
+export const AppContext = createContext<AppContextType>({} as AppContextType);
+
+export const AppContextProvider = ({ children }: any) => {
   const location = useLocation();
   const navigate = useNavigate()
   const checkCurrentPage = () => {
@@ -38,12 +94,12 @@ export const AppContextProvider = ({ children }) => {
     }
   }
   useEffect(() => {
-    checkCurrentPage()
+    // checkCurrentPage()
   }, [location])
-  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails")))
-  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient")));
-  const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment")))
-  const [userPermissions, setUserPermissions] = useState({ Home: [], Topbar: [], User: [], Analysis: [], Other: [], Scheme: [], Treatment: [], Overview: [], medHistory: [] })
+  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || ""));
+  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || ""));
+  const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment") || ""))
+  // const [userPermissions, setUserPermissions] = useState({ Home: [], Topbar: [], User: [], Analysis: [], Other: [], Scheme: [], Treatment: [], Overview: [], medHistory: [] })
   const AllSidebarItems = [
     { name: "Calendar", icon: "uil uil-schedule", navigate: "/home", selected: false, patientRelated: false, onlyAdmin: false },
     { name: "Calendar", icon: "uil uil-schedule", navigate: "/home", selected: false, patientRelated: true, onlyAdmin: false },
@@ -73,22 +129,25 @@ export const AppContextProvider = ({ children }) => {
   const [searchText, setSearchText] = useState("")
   const [patientButton, setPatientButton] = useState(true)
   const [isAddPatientOpen, setIsAddPatientOpen] = useState(false)
-  const [selectedPatientId, setSelectedPatientId] = useState("")
+  const [selectedPatientId, setSelectedPatientId] = useState<string | undefined>("")
   const [medicalFormId, setMedicalFormId] = useState(true)
   const [DocumentId, setDocumentId] = useState(true)
   const [searchValue, setSearchValue] = useState("")
   const [user, setUser] = useState(false);
-  const [addPatientForm, setAddPatientForm] = useState({
+  const [addPatientForm, setAddPatientForm] = useState<Patient>({
     first_name: "",
+    patient_no: "",
     ID: "",
     email: "",
     mobile: "",
     dob: "",
     custom_scheme: "",
+    scheme: "",
     sex: "",
     address: "",
     address2: "",
     custom_patient_type: "",
+    patient_type: "",
     enabled_communications: {
       text: false,
       voice: false,
@@ -121,7 +180,7 @@ export const AppContextProvider = ({ children }) => {
     setSidebarItems(AllSidebarItems.filter((item) => userDetails?.name === "admin" ? !item.patientRelated : (!item.patientRelated && !item.onlyAdmin)));
   }
 
-  const selectPatient = (patient) => {
+  const selectPatient = (patient: Patient) => {
     if (patient) {
       console.log(patient)
       setSidebarCollapse(true)
@@ -131,7 +190,7 @@ export const AppContextProvider = ({ children }) => {
       setSidebarItems(AllSidebarItems.filter((item) => item.patientRelated));
     }
   }
-  const handleEditPatient = (patient) => {
+  const handleEditPatient = (patient: Patient) => {
     if (patient) {
       setPatientButton(false);
       const address = patient.address?.split("§ͱ") || ""
@@ -147,6 +206,7 @@ export const AppContextProvider = ({ children }) => {
         sex: patient.sex,
         address: address[0] || "",
         address2: address[1] || "",
+        custom_patient_type: patient.custom_patient_type || "",
         patient_type: patient.patient_type,
         enabled_communications: patient.enabled_communications
       });

@@ -1,8 +1,8 @@
 import "./Login.css";
 import React, { useContext, useState, useEffect } from "react";
 import Logo from "../../assets/DentalLogo.svg";
-import showPasswordIcon from "../../assets/ShowPassword.svg";
-import hidePasswordIcon from "../../assets/HidePassword.svg";
+import showPasswordIcon from "./ShowPassword.svg";
+import hidePasswordIcon from "./HidePassword.svg";
 import { useNavigate } from "react-router-dom";
 import { loginToApp } from "../../Api/Index";
 import { loginUser } from "../../Api/UserApi";

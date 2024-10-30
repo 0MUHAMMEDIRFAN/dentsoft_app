@@ -1,16 +1,16 @@
 import { Layout, Menu, theme } from "antd";
 import { useState, useContext, useEffect } from "react";
-// import { AppContext } from "../Contexts/AppContext";
+import { AppContext, AppContextType } from "../contexts/AppContext";
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Topbar from "../components/Topbar/Topbar";
 // import Sidebar from "../Components/Sidebar/Sidebar";
-import NoAccess from "../Components/NoAccess/NoAccess";
+// import NoAccess from "../Components/NoAccess/NoAccess";
 import moment from "moment";
 
 const { Header, Content, Footer, Sider } = Layout;
 const MainLayout = () => {
-  // const { sidebarCollapse, setSidebarCollapse, selectedPatient, deselectPatient, handleEditPatient, addPatientForm } = useContext(AppContext) || {};
-  const { sidebarCollapse, setSidebarCollapse, selectedPatient, deselectPatient, handleEditPatient, addPatientForm } = {};
+  const { sidebarCollapse, setSidebarCollapse, selectedPatient, deselectPatient, handleEditPatient, addPatientForm } = useContext<AppContextType>(AppContext) || {};
+  // const { sidebarCollapse, setSidebarCollapse, selectedPatient, deselectPatient, handleEditPatient, addPatientForm } = {};
   const navigate = useNavigate()
   const tabs = [{ name: "Overview", value: "/patient/overview" }, { name: "Documents", value: "/patient/documents" }, { name: "Appointments", value: "/patient/appointments" }, { name: "Med History", value: "/patient/medicalhistory" }, { name: "Payments", value: "/patient/payments" }]
   const location = useLocation()
