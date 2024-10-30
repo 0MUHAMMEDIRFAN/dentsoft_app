@@ -2,24 +2,28 @@ app_name = "dentsoft_app"
 app_title = "Dentsoft"
 app_publisher = "Muhammed Irfan"
 app_description = "The test app for doppio"
+app_icon = "octicon octicon-file-directory"
+app_color = "grey"
 app_email = "irfan@whitejson.com"
 app_license = "mit"
+app_home = "/dentsoft"
 
+# Each item in the list will be shown as an app in the apps page
+add_to_apps_screen = [
+	{
+		"name": "dentsoft",
+		"logo": "/assets/dentsoft/images/dentsoft.svg",
+		"title": "Dentsoft",
+		"route": "/dentsoft",
+		"has_permission": "erpnext.check_app_permission",
+	}
+]
 # Apps
 # ------------------
 
-# required_apps = []
+required_apps = ["healthcare"]
 
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "dentsoft_app",
-# 		"logo": "/assets/dentsoft_app/logo.png",
-# 		"title": "dentsoft App",
-# 		"route": "/dentsoft_app",
-# 		"has_permission": "dentsoft_app.api.permission.has_app_permission"
-# 	}
-# ]
+
 
 # Includes in <head>
 # ------------------

@@ -220,13 +220,13 @@ function Topbar() {
     }
     useEffect(() => {
         // listSchemes()
-        loadProfilePicture()
-        listReceptionistNotes(userDetails?.id)
+        // loadProfilePicture()
+        // listReceptionistNotes(userDetails?.id)
     }, [])
     const profileRef = useRef(null)
     const notiRef = useRef(null)
     useEffect(() => {
-        loadProfilePicture()
+        // loadProfilePicture()
     }, [userDetails])
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -275,7 +275,7 @@ function Topbar() {
                     </div>
                 </div>
                 {/* <<<<<<<<<<----------date selection input, butttons, date---------->>>>>>>>>> */}
-                <div className={`${location.pathname === "/home" ? "gap-[1.5vw]" : "opacity-0 pointer-events-none gap-[1vw]"} flex items-center font-medium text-lg leading-[21px] text-[#444648] whitespace-nowrap custom-transition`}>
+                {/* <div className={`${location.pathname === "/home" ? "gap-[1.5vw]" : "opacity-0 pointer-events-none gap-[1vw]"} flex items-center font-medium text-lg leading-[21px] text-[#444648] whitespace-nowrap custom-transition`}>
                     <div className='w-28 flex custom-transition'>
                         <label htmlFor='topbarDate' className="text-sm border border-solid border-[#DADCE0] text-[#888888] rounded px-1.5 py-1 custom-transition hover:bg-gray-100" onClick={() => ""}>
                             {topbarDate === moment(new Date).format("YYYY-MM-DD") ? "Today" : checkDay(new Date(topbarDate).getDay())}
@@ -302,7 +302,7 @@ function Topbar() {
                         </div>
                     </div>
                     <p className="w-36">{moment(topbarDate).format("Do MMM YYYY")}</p>
-                </div>
+                </div> */}
                 {/* <<<<<<<<<<----------serach and add add patient button---------->>>>>>>>>> */}
                 <div className={`flex items-center gap-[1vw] ml-auto`}>
                     <label htmlFor="search" className={`flex items-center max-w-[290px] bg-[#F2F2F2] rounded-[22px] overflow-hidden ml-[.5vw] ${isNotiOpen ? "w-[38px] px-[9px]" : "w-[15vw] px-3.5"} h-8 cursor-text relative custom-transition`}>
@@ -372,7 +372,7 @@ function Topbar() {
             {/* <<<<<<<<<<----------Patient List---------->>>>>>>>>> */}
 
 
-            <div className={`${searchText ? "opacity-1" : "opacity-0 pointer-events-none"} custom-transition`}>
+            {/* <div className={`${searchText ? "opacity-1" : "opacity-0 pointer-events-none"} custom-transition`}>
                 <div className="w-full h-[calc(100vh-70px)] absolute bg-black bg-opacity-10 top-[70px] left-0" onClick={() => setSearchText("")}></div>
                 <div className={`${searchText ? "top-[72px] max-h-[calc(100vh-80px)]" : "top-[40px] max-h-[calc(90vh-80px)] "} w-[760px]  absolute right-[calc(255px+13.5vw)] translate-x-1/2 min-h-[69px] bg-white drop-shadow rounded-md border border-solid z-10 overflow-scroll hide-scrollbar custom-transition`}>
                     <div className={`${(patientsLoading === "Loading" && patients.length) ? "bg-opacity-50" : "bg-opacity-0"} w-full h-full bg-black absolute animate-pulse pointer-events-none custom-transition`}></div>
@@ -431,7 +431,7 @@ function Topbar() {
                         </div>
                     }
                 </div>
-            </div>
+            </div> */}
 
 
             {/* <<<<<<<<<<----------Add Patient---------->>>>>>>>>> */}
@@ -500,7 +500,7 @@ function Topbar() {
 
             {/* <<<<<<<<<<----------Receptionist notes---------->>>>>>>>>> */}
 
-            <div className={`${isReceptionistNotesOpen ? "" : "opacity-0 pointer-events-none"} w-full h-[calc(100vh-70px)] absolute bg-black bg-opacity-10 top-[70px] left-0 custom-transition`} onClick={closeAll}></div>
+            {/* <div className={`${isReceptionistNotesOpen ? "" : "opacity-0 pointer-events-none"} w-full h-[calc(100vh-70px)] absolute bg-black bg-opacity-10 top-[70px] left-0 custom-transition`} onClick={closeAll}></div>
             <div className={`${isReceptionistNotesOpen ? "-translate-x-full" : "-translate-x-0 pointer-events-none "} custom-transition absolute top-[70px] left-full flex flex-col box-border bg-white px-5 pt-14 pb-3 inset-0 h-[calc(100vh-70px)] text-sm border-l overflow-auto w-[337px]`}>
                 <div className='flex border border-solid border-[#EBEDF0] rounded-[20px] h-10 items-center px-4 gap-2'>
                     <i className='bx bx-search text-[#C5C5C5] text-xl'></i>
@@ -540,7 +540,7 @@ function Topbar() {
                     </ul>
                 </div>
                 <button type='button' className={`${loading ? "opacity-70 cursor-wait active:scale-100" : ""} absolute right-5 top-5`} onClick={closeAll} ><i className='bx bx-x text-2xl leading-7' /></button>
-            </div >
+            </div > */}
 
             {/* <<<<<<<<<<----------Add or Update Note Modal---------->>>>>>>>>> */}
 

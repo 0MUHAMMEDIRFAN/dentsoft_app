@@ -96,9 +96,9 @@ export const AppContextProvider = ({ children }: any) => {
   useEffect(() => {
     // checkCurrentPage()
   }, [location])
-  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || ""));
-  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || ""));
-  const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment") || ""))
+  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || "{}"));
+  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || "{}"));
+  const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment") || "{}"))
   // const [userPermissions, setUserPermissions] = useState({ Home: [], Topbar: [], User: [], Analysis: [], Other: [], Scheme: [], Treatment: [], Overview: [], medHistory: [] })
   const AllSidebarItems = [
     { name: "Calendar", icon: "uil uil-schedule", navigate: "/home", selected: false, patientRelated: false, onlyAdmin: false },
