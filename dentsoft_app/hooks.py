@@ -12,7 +12,7 @@ app_home = "/dentsoft"
 add_to_apps_screen = [
 	{
 		"name": "dentsoft",
-		"logo": "/assets/dentsoft/images/dentsoft.svg",
+		"logo": "/assets/dentsoft_app/images/dentsoft.svg",
 		"title": "Dentsoft",
 		"route": "/dentsoft",
 		"has_permission": "erpnext.check_app_permission",
