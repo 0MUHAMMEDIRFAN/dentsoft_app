@@ -6,7 +6,8 @@ app_icon = "octicon octicon-file-directory"
 app_color = "grey"
 app_email = "irfan@whitejson.com"
 app_license = "mit"
-app_home = "/dentsoft"
+app_logo = "/assets/dentsoft_app/images/dentsoft.svg"
+# app_home = "/dentsoft"
 
 # Each item in the list will be shown as an app in the apps page
 add_to_apps_screen = [
