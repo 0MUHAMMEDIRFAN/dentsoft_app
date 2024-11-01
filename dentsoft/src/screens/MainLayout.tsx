@@ -3,7 +3,7 @@ import { useState, useContext, useEffect } from "react";
 import { AppContext, AppContextType } from "../contexts/AppContext";
 import { Outlet, useLocation, useNavigate } from 'react-router-dom'
 import Topbar from "../components/Topbar/Topbar";
-// import Sidebar from "../Components/Sidebar/Sidebar";
+import Sidebar from "../components/Sidebar/Sidebar";
 // import NoAccess from "../Components/NoAccess/NoAccess";
 import moment from "moment";
 
@@ -36,7 +36,7 @@ const MainLayout = () => {
           // className="border-r border-r-[#EAECF0]"
           className="border-r border-r-[#cdcdcd] custom-transition overflow-y-auto overflow-x-hidden hide-scrollbar"
         >
-          {/* <Sidebar /> */}
+          <Sidebar />
         </Sider>
 
         {/* this layout for main contents , / body contents after sidebar */}

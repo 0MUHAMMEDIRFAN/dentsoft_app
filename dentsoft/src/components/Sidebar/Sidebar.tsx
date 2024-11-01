@@ -16,7 +16,16 @@ const Sidebar = () => {
     <div className={`w-auto bg- ${sidebarCollapse ? "" : "pt-52"} custom-transition relative min-h-full`}>
       <div className="flex flex-col justify-center w-full">
         <div className={`${sidebarCollapse ? "opacity-0 scale-0 left-0 gap-0" : ""} flex flex-col items-center justify-center gap-3 my-5 w-full absolute -z-0 top-0 left-1/2 -translate-x-1/2 custom-transition`}>
-          {profilePictureLoading === "Loading" ?
+          {userDetails?.user_image ?
+            <img
+              className="w-28 h-28 rounded-full drop-shadow"
+              src={userDetails?.user_image}
+              alt="Profile picture"
+              crossOrigin="anonymous"
+            /> :
+            <i className='bx bxs-user text-[70px] leading-[112px] w-28 h-28 text-center text-[#a2c4ff]  bg-[#F2F4F9] drop-shadow rounded-full' />
+          }
+          {/* {profilePictureLoading === "Loading" ?
             <div className="rounded-full w-28 h-28 bg-neutral-200 animate-pulse drop-shadow">
             </div> :
             profilePictureLoading === "Error" ?
@@ -37,13 +46,13 @@ const Sidebar = () => {
                     :
                     <i className='bx bxs-user text-[70px] leading-[112px] w-28 h-28 text-center text-[#a2c4ff]  bg-[#F2F4F9] drop-shadow rounded-full' />
                   : ""
-          }
-          <div className="flex flex-col items-center justify-center gap-1">
+          } */}
+          <div className="flex flex-col justify-center items-center gap-1">
             <p className="text-[14px] font-semibold text-[#444648 text-[#444648]">
-              {userDetails?.name || userDetails}
+              {userDetails?.full_name}
             </p>
             <p className="text-[14px] font-semibold text-[#B3B6B9 text-[#B3B6B9]">
-              {userDetails?.role?.name && `as ${userDetails?.role?.name}`}
+              {userDetails?.user_type}
             </p>
           </div>
         </div>

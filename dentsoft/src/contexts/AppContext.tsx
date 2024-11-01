@@ -3,11 +3,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { ToastContext } from "./ToastContext";
 // import moment from "moment";
 import { Patient } from "../types/types";
+import { useFrappeAuth } from "frappe-react-sdk";
+import useCurrentUserData from "@/hooks/useCurrentUserData";
 
 export interface AppContextType {
   location: any;
   userDetails: any;
-  setUserDetails: any;
+  // setUserDetails: any;
   sidebarCollapse: any;
   setSidebarCollapse: any;
   viewMedical: any;
@@ -64,39 +66,51 @@ export const AppContext = createContext<AppContextType>({} as AppContextType);
 export const AppContextProvider = ({ children }: any) => {
   const location = useLocation();
   const navigate = useNavigate()
+  const { currentUser, isLoading } = useFrappeAuth()
   const checkCurrentPage = () => {
-    if (!localStorage.getItem("userDetails")) {
+    if (isLoading) {
+      return;
+    } else if (location.pathname === "login" && (currentUser || currentUser !== 'Guest')) {
+      navigate("/")
     }
-    if (location.pathname === "/login") {
-      if (localStorage.getItem("access_token") != "" && localStorage.getItem("access_token") != null && localStorage.getItem("access_token") != undefined && localStorage.getItem("userDetails")) {
-        navigate("/home")
-      } else {
-        localStorage.clear()
-        deselectPatient();
-      }
-    } else if (location.pathname === "/") {
-      (localStorage.getItem("access_token") == "" ||
-        localStorage.getItem("access_token") == null ||
-        localStorage.getItem("access_token") == undefined ||
-        !localStorage.getItem("userDetails")
-      )
-        ? navigate("/login")
-        : navigate("/home")
-    } else if (localStorage.getItem("access_token") == "" ||
-      localStorage.getItem("access_token") == null ||
-      localStorage.getItem("access_token") == undefined ||
-      !localStorage.getItem("userDetails")
-    ) {
-      localStorage.clear()
-      deselectPatient();
+    else if (!currentUser || currentUser === 'Guest') {
       navigate("/login")
-      notify("Please login in order to proceed", "warning")
     }
+
+    // if (!localStorage.getItem("userDetails")) {
+    // }
+    // if (location.pathname === "/login") {
+    //   if (localStorage.getItem("access_token") != "" && localStorage.getItem("access_token") != null && localStorage.getItem("access_token") != undefined && localStorage.getItem("userDetails")) {
+    //     navigate("/home")
+    //   } else {
+    //     localStorage.clear()
+    //     deselectPatient();
+    //   }
+    // } else if (location.pathname === "/") {
+    //   (localStorage.getItem("access_token") == "" ||
+    //     localStorage.getItem("access_token") == null ||
+    //     localStorage.getItem("access_token") == undefined ||
+    //     !localStorage.getItem("userDetails")
+    //   )
+    //     ? navigate("/login")
+    //     : navigate("/home")
+    // } else if (localStorage.getItem("access_token") == "" ||
+    //   localStorage.getItem("access_token") == null ||
+    //   localStorage.getItem("access_token") == undefined ||
+    //   !localStorage.getItem("userDetails")
+    // ) {
+    //   localStorage.clear()
+    //   deselectPatient();
+    //   navigate("/login")
+    //   notify("Please login in order to proceed", "warning")
+    // }
   }
   useEffect(() => {
-    // checkCurrentPage()
-  }, [location])
-  const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || "{}"));
+    checkCurrentPage()
+  }, [currentUser])
+
+  // const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || "{}"));
+  const { myProfile: userDetails, mutate } = useCurrentUserData();
   const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || "{}"));
   const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment") || "{}"))
   // const [userPermissions, setUserPermissions] = useState({ Home: [], Topbar: [], User: [], Analysis: [], Other: [], Scheme: [], Treatment: [], Overview: [], medHistory: [] })
@@ -236,6 +250,7 @@ export const AppContextProvider = ({ children }: any) => {
   //   })
   useEffect(() => {
     // CatogariseUserPermissions()
+    console.log(userDetails)
   }, [userDetails])
 
   const selectSidebarItem = () => {
@@ -249,7 +264,7 @@ export const AppContextProvider = ({ children }: any) => {
   const value = {
     location,
     userDetails,
-    setUserDetails,
+    // setUserDetails,
     sidebarCollapse,
     setSidebarCollapse,
     viewMedical,
