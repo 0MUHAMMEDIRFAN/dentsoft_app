@@ -24,7 +24,7 @@ add_to_apps_screen = [
 
 required_apps = ["healthcare"]
 
-
+fixtures = [{ "doctype": "Client Script", "filters": [ ["module", "in", ( "dentsoft App" )] ] }]
 
 # Includes in <head>
 # ------------------

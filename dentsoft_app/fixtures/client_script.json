@@ -1,0 +1,13 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Client Script",
+  "dt": "Patient",
+  "enabled": 1,
+  "modified": "2024-11-22 22:59:58.520367",
+  "module": "dentsoft App",
+  "name": "Patient Chart Button",
+  "script": "frappe.ui.form.on('Patient', {\n\trefresh(frm) {\n        frm.add_custom_button(__('Dental Chart'), function(){\n            let url = frappe.urllib.get_base_url();\n            console.log(frm.doc.name)\n            window.location.href = url+\"/dentsoft/dentalChart?patient=\"+frm.doc.name;\n        }, __(\"View\"));\n    }\n})",
+  "view": "Form"
+ }
+]
