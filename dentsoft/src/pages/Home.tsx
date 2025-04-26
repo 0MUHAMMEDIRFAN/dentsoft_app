@@ -1,12 +1,11 @@
 import React from 'react'
-import DentalChart from '../components/DentalChart'
-
+import HomeComponent from '../components/Home/Home'
 function Home() {
-    return (
-        <div>
-            <p>Hello guys</p>
-        </div>
-    )
+  return (
+    <div>
+      <HomeComponent />
+    </div>
+  )
 }
 
 export default Home

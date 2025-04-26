@@ -55,8 +55,8 @@ function Login() {
       const payload = form;
       const login = await frappeLogin(payload);
       console.log(login, "Login Successful");
-      setUserDetails(login.full_name)
-      localStorage.setItem("userDetails", JSON.stringify(login.full_name));
+      // setUserDetails(login.full_name)
+      // localStorage.setItem("userDetails", JSON.stringify(login.full_name));
       // localStorage.setItem("access_token", login.access_token);
       // localStorage.setItem("refresh_token", login.refresh_token);
       setLoading(false)

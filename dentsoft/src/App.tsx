@@ -9,6 +9,8 @@ import { ProtectedRoute } from './utils/auth/ProtectedRoute.tsx'
 import AuthRedirect from './utils/auth/AuthRedirect.tsx'
 import { ToastContextProvider } from './contexts/ToastContext.tsx'
 import { AppContextProvider } from './contexts/AppContext.tsx'
+import { ApiContextProvider } from './contexts/ApiContext.tsx'
+import UserManagement from './pages/UserManagement.tsx'
 
 function App() {
 	// const router = createBrowserRouter(
@@ -34,22 +36,26 @@ function App() {
 				<div className="App">
 					<ToastContextProvider>
 						<AppContextProvider>
-							<Routes>
-								{/* the below component is used to check the user is authenticated or not */}
-								<Route path='/' element={<ProtectedRoute />} >
-									<Route path='/' element={<MainLayout />} >
-										<Route path="home" element={<Home />} />
-										{/* <Route path="/home" element={<Overview/>}  /> */}
-										{/* <Route path="/patient/overview" element={<Overview />}  /> */}
-									</Route>
-									<Route path="dentalChart" element={<Overview />} />
-								</Route>
-								<Route path='/login' element={<AuthRedirect />}>
-									<Route path='' element={<Login />}>
+							<ApiContextProvider>
 
+								<Routes>
+									{/* the below component is used to check the user is authenticated or not */}
+									<Route path='/' element={<ProtectedRoute />} >
+										<Route path='/' element={<MainLayout />} >
+											<Route path="" element={<Home />} />
+											<Route path="/patient/overview" element={<Overview />} />
+											<Route path="user-managment" element={<UserManagement />} />
+											{/* <Route path="/patient/overview" element={<Overview />}  /> */}
+										</Route>
+										<Route path="dentalChart" element={<Overview />} />
 									</Route>
-								</Route>
-							</Routes>
+									<Route path='/login' element={<AuthRedirect />}>
+										<Route path='' element={<Login />}>
+
+										</Route>
+									</Route>
+								</Routes>
+							</ApiContextProvider>
 						</AppContextProvider>
 					</ToastContextProvider>
 				</div>

@@ -12,4 +12,5 @@ const useCurrentUserData = () => {
     }
 }
 
+
 export default useCurrentUserData;

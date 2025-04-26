@@ -6,7 +6,7 @@ import { useFrappeAuth } from 'frappe-react-sdk'
 export const ProtectedRoute = () => {
 
     const { currentUser, isLoading } = useFrappeAuth()
-
+    // console.log(currentUser,isLoading)
     if (isLoading) {
         return <></>
     }

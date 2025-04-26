@@ -10,7 +10,7 @@ const Sidebar = () => {
   useEffect(() => {
     // setSidebarItems(filterSidebarItems());
     // selectSidebarItem();
-    // console.log(userDetails)
+    // console.log(sidebarItems)
   }, [location])
   return (
     <div className={`w-auto bg- ${sidebarCollapse ? "" : "pt-52"} custom-transition relative min-h-full`}>

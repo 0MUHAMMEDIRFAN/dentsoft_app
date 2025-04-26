@@ -66,7 +66,7 @@ function Topbar() {
     }
     const handleSearchChange = (event) => {
         // setPatients([])
-        listPatients(event.target.value)
+        // listPatients(event.target.value)
         if (selectedPatient) {
             // deselectPatient();
             // listAppointments(topbarDate, "", "")
@@ -372,11 +372,11 @@ function Topbar() {
             {/* <<<<<<<<<<----------Patient List---------->>>>>>>>>> */}
 
 
-            {/* <div className={`${searchText ? "opacity-1" : "opacity-0 pointer-events-none"} custom-transition`}>
+            <div className={`${searchText ? "opacity-1" : "opacity-0 pointer-events-none"} custom-transition`}>
                 <div className="w-full h-[calc(100vh-70px)] absolute bg-black bg-opacity-10 top-[70px] left-0" onClick={() => setSearchText("")}></div>
                 <div className={`${searchText ? "top-[72px] max-h-[calc(100vh-80px)]" : "top-[40px] max-h-[calc(90vh-80px)] "} w-[760px]  absolute right-[calc(255px+13.5vw)] translate-x-1/2 min-h-[69px] bg-white drop-shadow rounded-md border border-solid z-10 overflow-scroll hide-scrollbar custom-transition`}>
                     <div className={`${(patientsLoading === "Loading" && patients.length) ? "bg-opacity-50" : "bg-opacity-0"} w-full h-full bg-black absolute animate-pulse pointer-events-none custom-transition`}></div>
-                    {patients.map((patient, index) => {
+                    {patients?.map((patient, index) => {
                         return (
                             <div key={index} className='border-b min-h-[56px] px-4 py-2 flex gap-1 items-center hover:bg-black w-full hover:bg-opacity-10 hover:py-2.5 custom-transition fade_in'  >
                                 <div className='flex w-full' onClick={() => { handleSelectPatient(patient) }}>
@@ -411,7 +411,7 @@ function Topbar() {
                         )
                     })}
 
-                    {patients.length ?
+                    {patients?.length ?
                         // (patients.length / 10 === patientPage) &&
                         // <div className='box-border h-7 bg-white flex justify-center items-center'>
                         //     {patientsLoading === "Loading" ?
@@ -431,7 +431,7 @@ function Topbar() {
                         </div>
                     }
                 </div>
-            </div> */}
+            </div>
 
 
             {/* <<<<<<<<<<----------Add Patient---------->>>>>>>>>> */}

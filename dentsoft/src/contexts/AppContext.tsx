@@ -111,12 +111,12 @@ export const AppContextProvider = ({ children }: any) => {
 
   // const [userDetails, setUserDetails] = useState(JSON.parse(localStorage.getItem("userDetails") || "{}"));
   const { myProfile: userDetails, mutate } = useCurrentUserData();
-  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || "{}"));
+  const [selectedPatient, setSelectedPatient] = useState(JSON.parse(localStorage.getItem("selectedPatient") || null));
   const [selectedAppointment, setSelectedAppointment] = useState(JSON.parse(localStorage.getItem("selectedAppointment") || "{}"))
   // const [userPermissions, setUserPermissions] = useState({ Home: [], Topbar: [], User: [], Analysis: [], Other: [], Scheme: [], Treatment: [], Overview: [], medHistory: [] })
   const AllSidebarItems = [
-    { name: "Calendar", icon: "uil uil-schedule", navigate: "/home", selected: false, patientRelated: false, onlyAdmin: false },
-    { name: "Calendar", icon: "uil uil-schedule", navigate: "/home", selected: false, patientRelated: true, onlyAdmin: false },
+    { name: "Calendar", icon: "uil uil-schedule", navigate: "/", selected: false, patientRelated: false, onlyAdmin: false },
+    { name: "Calendar", icon: "uil uil-schedule", navigate: "/", selected: false, patientRelated: true, onlyAdmin: false },
     { name: "Patient", icon: "uil uil-user-nurse", navigate: "/patient/overview", selected: false, patientRelated: true, onlyAdmin: false },
     // { name: "Overview", icon: "uil uil-chart", navigate: "/overview", selected: false, patientRelated: true, onlyAdmin: false },
     // { name: "Alerts", icon: "bx bx-bell", navigate: "/", selected: false , patientRelated:false,onlyAdmin:true },
@@ -250,10 +250,11 @@ export const AppContextProvider = ({ children }: any) => {
   //   })
   useEffect(() => {
     // CatogariseUserPermissions()
-    console.log(userDetails)
+    // console.log(userDetails)
   }, [userDetails])
 
   const selectSidebarItem = () => {
+    console.log("HI")
     setSidebarItems((prev) =>
       prev.map(item =>
         location.pathname.startsWith("/patient") && item.navigate.startsWith("/patient") ? { ...item, selected: true } :

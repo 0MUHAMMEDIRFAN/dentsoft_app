@@ -43,7 +43,7 @@ const MainLayout = () => {
 
         <Layout
           className={`site-layout custom-transition overflow-scroll  ${!sidebarCollapse ? "ml-[200px]" : "ml-[80px]"}`} id="layoutContainer"
-          onScroll={() => setscrolled(layoutElement.scrollTop)}
+          onScroll={() => layoutElement && setscrolled(layoutElement.scrollTop)}
         >
           {selectedPatient &&
             <div className={`${scrolled > 120 && "shadow-md"} border-b px-5 pt-4 sticky -top-[110px] z-50 bg-white`} onClick={() => ""}>

@@ -1,0 +1,18 @@
+.half_column,
+.time_column {
+    border-inline: none;
+}
+
+.time_column,.half_column:nth-child(2n-1) {
+    border-color: #CDCDCD;
+}
+
+.half_column,
+.time_column:not(:first-child) {
+    border-top: none;
+}
+
+div:has(.half_column) {
+    border-right-width: 1px;
+    border-color: #CDCDCD;
+}
