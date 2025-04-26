@@ -1,0 +1,37 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"TzVGio1C9e\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Dentsoft</span>\",\"col\":12}},{\"id\":\"wmHz3Dak5v\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Launch Dentsoft\",\"col\":3}}]",
+ "creation": "2025-04-26 14:06:12.837931",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "non-profit",
+ "idx": 0,
+ "indicator_color": "",
+ "is_hidden": 0,
+ "label": "Dentsoft",
+ "links": [],
+ "modified": "2025-04-26 14:07:52.966012",
+ "modified_by": "Administrator",
+ "module": "dentsoft App",
+ "name": "Dentsoft",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 28.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Launch Dentsoft",
+   "type": "URL",
+   "url": "/dentsoft"
+  }
+ ],
+ "title": "Dentsoft"
+}
