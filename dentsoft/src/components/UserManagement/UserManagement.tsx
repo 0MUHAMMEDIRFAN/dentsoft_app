@@ -15,6 +15,8 @@ import { fileUpload, getFile } from '../../Api/CommonApi';
 import { AppContext } from '../../contexts/AppContext';
 import { ApiContext } from '../../contexts/ApiContext';
 import { createUser, getUserList } from '../../hooks/useUser';
+import { getRoleProfileList } from '../../hooks/useRole';
+import { useFrappeCreateDoc } from 'frappe-react-sdk';
 
 
 function UserManagement() {
@@ -44,7 +46,7 @@ function UserManagement() {
     const [userRole, setUserRole] = useState("");
     const [searchUser, setSearchUser] = useState("");
     const [searchRole, setSearchRole] = useState("");
-    const [roles, setRoles] = useState([])
+    // const [roles, setRoles] = useState([])
     // const [users, setUsers] = useState([])
     const [activity, setActivity] = useState([])
     const [activityDate, setActivityDate] = useState(moment(new Date).format("YYYY-MM-DD"))
@@ -124,6 +126,8 @@ function UserManagement() {
     }
 
     const { data: users } = getUserList()
+    const { data: roles } = getRoleProfileList()
+    const { createDoc, isCompleted, error, loading:createLoading } = useFrappeCreateDoc();
 
 
 
@@ -158,9 +162,11 @@ function UserManagement() {
         }
     }
     const addUser = async (fileData = "") => {
+        notify("", "error")
         try {
-            const payload = fileData ? { ...userForm, profile_photo: fileData } : userForm
-            const result = await registerUser(payload)
+            // const payload = fileData ? { ...userForm, profile_photo: fileData } : userForm
+            const result = await createDoc('User',userForm)
+            // const result = await registerUser(payload)
             notify("User Added SuccessFully", "success")
             setLoading(false)
             closeModal();
@@ -446,7 +452,7 @@ function UserManagement() {
         }
     }
     useEffect(() => {
-        console.log(users)
+        // console.log(users)
         // permissions.length || listPermissions();
         // listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole);
         // listRoles(searchRole, rolesMeta?.page, rolesMeta?.size);
@@ -455,7 +461,6 @@ function UserManagement() {
     return (
         <div className='bg-[#00] text-[#444648] flex flex-col p-7 box-border h-full overflow-auto fade_in'>
             {/* <<<<<<<<<<----------Heading---------->>>>>>>>>> */}
-            {createUser()}
             <div>
                 <div className='flex gap-2 items-center relative pb-6 head_with_qstn_mark'>
                     <h2 className='text-xl font-semibold'>User Management</h2>

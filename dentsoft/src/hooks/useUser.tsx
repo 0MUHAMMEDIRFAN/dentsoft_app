@@ -28,33 +28,22 @@ export const getUserList = (searchTerm: string | undefined) => {
 
 export const createUser = () => {
     const { createDoc, isCompleted, error, loading } = useFrappeCreateDoc();
-
-    const handleCreateUser = async () => {
-        const newUser = {
-            full_name: "John Doe",
-            email: "johndoe@example.com",
-            enabled: 1,
-            phone: "1234567890",
-            gender: "Male",
-            user_type: "System User",
-            role_profile_name: "Employee",
-        };
-
-        try {
-            const response = await createDoc('User',newUser);
-            console.log("User created successfully:", response);
-        } catch (err) {
-            console.error("Error creating user:", err);
-        }
+    const newUser = {
+        first_name: "John Doe",
+        email: "johndoe@example.com",
+        // enabled: 1,
+        phone: "1234567890",
+        gender: "Male",
+        // user_type: "System User",
+        // role_profile_name: "Employee",
     };
+
 
     if (loading) return <p>Creating user...</p>;
     if (error) return <p>Error: {error.message}</p>;
     if (isCompleted) return <p>User created successfully!</p>;
 
     return (
-        <button onClick={handleCreateUser}>
-            Create User
-        </button>
+        true
     );
 }
