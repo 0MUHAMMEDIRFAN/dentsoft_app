@@ -11,45 +11,15 @@ import { AppContext } from "../../contexts/AppContext";
 import { useFrappeAuth } from "frappe-react-sdk";
 
 function Login() {
-  const { login: frappeLogin, error: frappeError } = useFrappeAuth();
+  const { login: frappeLogin, error: frappeError,isLoading } = useFrappeAuth();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  // const [loginAsAdmin, setLoginAsAdmin] = useState(false);
-  const [loading, setLoading] = useState(false);
   const { setUserDetails } = useContext(AppContext)
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
     password: "",
   });
-  // const adminLogin = async () => {
-  //   try {
-  //     const payload = form;
-  //     const login = await loginToApp(payload);
-  //     console.log(login, "Login Successful");
-  //     setUserDetails(login.admin)
-  //     localStorage.setItem("userDetails", JSON.stringify(login.admin));
-  //     localStorage.setItem("access_token", login.access_token);
-  //     localStorage.setItem("refresh_token", login.refresh_token);
-  //     setForm(() => ({
-  //       username: "",
-  //       password: "",
-  //     }));
-  //     deselectPatient();
-  //     navigate("/");
-  //     setLoading(false)
-  //   } catch (error: any) {
-  //     // if (error.message === "Invalid email or password") {
-  //     // userLogin();
-  //     // }
-  //     // else {
-  //     console.log(error.message);
-  //     setError(error.message);
-  //     setLoading(false)
-  //     // }
-
-  //   }
-  // };
   const userLogin = async () => {
     try {
       const payload = form;
@@ -59,7 +29,6 @@ function Login() {
       // localStorage.setItem("userDetails", JSON.stringify(login.full_name));
       // localStorage.setItem("access_token", login.access_token);
       // localStorage.setItem("refresh_token", login.refresh_token);
-      setLoading(false)
       setForm(() => ({
         username: "",
         password: "",
@@ -67,7 +36,6 @@ function Login() {
       navigate("/");
     } catch (error: any) {
       console.log(error);
-      setLoading(false)
       setError(error.message);
     }
   };
@@ -81,23 +49,13 @@ function Login() {
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (!loading) {
+    if (!isLoading) {
       setError("");
       // loginAsAdmin ? adminLogin() : 
       userLogin()
-      setLoading(true)
     }
   };
 
-  // const changeLoginType = () => {
-  //   if (!loading) {
-  //     setLoginAsAdmin(!loginAsAdmin);
-  //     setForm({
-  //       username: "",
-  //       password: "",
-  //     })
-  //   }
-  // }
   return (
     <div className="loginContainer">
       <div className="logo pop_up">
@@ -116,7 +74,7 @@ function Login() {
             name="username"
             required
             autoComplete=""
-            disabled={loading}
+            disabled={isLoading}
           />
           <p>Enter your email</p>
         </div>
@@ -129,7 +87,7 @@ function Login() {
             name="password"
             required
             autoComplete="new-password"
-            disabled={loading}
+            disabled={isLoading}
           />
           <p>Password</p>
           <span onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
@@ -143,7 +101,7 @@ function Login() {
           <p className="login-error">{error}</p>
           {/* <a className="custom-transition" onClick={changeLoginType}>{loginAsAdmin ? "Are you a User ?" : "Are you an Admin ?"}</a> */}
         </div>
-        <button className={`${loading ? "opacity-70 cursor-wait active:scale-100" : "hover:bg-[#3E42FA]"} text-sm bg-[#6063FF] w-full h-12 font-semibold rounded-md custom-transition text-white`} type="submit">{loading ? <i className='bx bx-loader-alt animate-spin'></i> : "Login"}</button>
+        <button className={`${isLoading ? "opacity-70 cursor-wait active:scale-100" : "hover:bg-[#3E42FA]"} text-sm bg-[#6063FF] w-full h-12 font-semibold rounded-md custom-transition text-white`} type="submit">{isLoading ? <i className='bx bx-loader-alt animate-spin'></i> : "Login"}</button>
       </form>
     </div>
   );

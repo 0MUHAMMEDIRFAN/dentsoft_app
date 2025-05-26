@@ -3,7 +3,7 @@ import { useFrappeGetDocList, useFrappeCreateDoc } from 'frappe-react-sdk';
 export const getUserList = (searchTerm: string | undefined) => {
     const { data, error, isLoading } = useFrappeGetDocList('User', {
         fields: ["full_name", "email", "enabled", "phone", "gender", "user_type", "role_profile_name", "last_login"], // Optional: Specify fields to retrieve
-        // filters: [["full_name", "=", searchTerm || ""]], // Optional: Add filters
+        filters: [["full_name", "=", searchTerm || ""]], // Optional: Add filters
         limit: 20, // Optional: Limit the number of results
         orderBy: { field: "modified", order: "desc" } // Optional: Sort results
     });

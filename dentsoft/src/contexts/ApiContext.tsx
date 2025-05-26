@@ -164,17 +164,6 @@ export const ApiContextProvider = ({ children }) => {
     const [doctorsLoaded, setDoctorsLoaded] = useState("loaded");
 
     const { logout } = useFrappeAuth()
-    // const logout = async () => {
-    //     try {
-
-    //         const result = await logOut()
-    //         localStorage.clear();
-    //         deselectPatient();
-    //         navigate("/login");
-    //     } catch (error) {
-    //         console.log(error.message)
-    //     }
-    // }
     const loadProfilePicture = async () => {
         try {
             if (userDetails?.profile_photo?.path) {

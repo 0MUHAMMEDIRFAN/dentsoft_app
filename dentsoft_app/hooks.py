@@ -10,15 +10,15 @@ app_logo = "/assets/dentsoft_app/images/dentsoft.svg"
 # app_home = "/dentsoft"
 
 # Each item in the list will be shown as an app in the apps page
-add_to_apps_screen = [
-	{
-		"name": "dentsoft",
-		"logo": "/assets/dentsoft_app/images/dentsoft.svg",
-		"title": "Dentsoft",
-		"route": "/dentsoft",
-		"has_permission": "erpnext.check_app_permission",
-	}
-]
+# add_to_apps_screen = [
+# 	{
+# 		"name": "dentsoft",
+# 		"logo": "/assets/dentsoft_app/images/dentsoft.svg",
+# 		"title": "Dentsoft",
+# 		"route": "/dentsoft",
+# 		# "has_permission": "erpnext.check_app_permission",
+# 	}
+# ]
 # Apps
 # ------------------
 
