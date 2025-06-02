@@ -14,7 +14,7 @@ function Login() {
   const { login: frappeLogin, error: frappeError,isLoading } = useFrappeAuth();
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const { setUserDetails } = useContext(AppContext)
+  // const { setUserDetails } = useContext(AppContext)
   const navigate = useNavigate();
   const [form, setForm] = useState({
     username: "",
@@ -25,6 +25,7 @@ function Login() {
       const payload = form;
       const login = await frappeLogin(payload);
       console.log(login, "Login Successful");
+      console.log(frappeError, "Frappe Error");
       // setUserDetails(login.full_name)
       // localStorage.setItem("userDetails", JSON.stringify(login.full_name));
       // localStorage.setItem("access_token", login.access_token);

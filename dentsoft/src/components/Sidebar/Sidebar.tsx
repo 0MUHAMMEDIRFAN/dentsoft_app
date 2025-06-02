@@ -11,6 +11,7 @@ const Sidebar = () => {
     // setSidebarItems(filterSidebarItems());
     // selectSidebarItem();
     // console.log(sidebarItems)
+    console.log(userDetails)
   }, [location])
   return (
     <div className={`w-auto bg- ${sidebarCollapse ? "" : "pt-52"} custom-transition relative min-h-full`}>
@@ -18,7 +19,7 @@ const Sidebar = () => {
         <div className={`${sidebarCollapse ? "opacity-0 scale-0 left-0 gap-0" : ""} flex flex-col items-center justify-center gap-3 my-5 w-full absolute -z-0 top-0 left-1/2 -translate-x-1/2 custom-transition`}>
           {userDetails?.user_image ?
             <img
-              className="w-28 h-28 rounded-full drop-shadow"
+              className="w-28 h-28 rounded-full drop-shadow border"
               src={userDetails?.user_image}
               alt="Profile picture"
               crossOrigin="anonymous"

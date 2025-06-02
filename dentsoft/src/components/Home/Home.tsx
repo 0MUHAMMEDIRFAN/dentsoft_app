@@ -181,7 +181,7 @@ function Home() {
       `${appointment.duration / 7.5}rem` // Default height
   };
   useEffect(() => {
-    console.log(appointments)
+    // console.log(appointments)
     // if (true) {
     //   if (selectedProvider) {
     //     listDoctorAppointments(selectedProvider)
@@ -199,7 +199,7 @@ function Home() {
         {/* time_column or 1st column  */}
         <div className='min-w-[83px] sticky left-0 bg-white z-20 '>
           <div className={`${styles.half_column} h-16 z-10 flex items-center justify-center font-medium bg-white border w-full`}><img src={Clock} width={15} alt="" /></div>
-          {timeColumn.map((data, index) => {
+          {timeColumn?.map((data, index) => {
             return (
               <div key={index} className={`${styles.time_column} w-full h-32 flex items-center justify-center border ${new Date().getHours() === index ? 'text-black' : 'text-[#B3B6B9]'}`}>
                 {index === 0 ? 12 + " AM" : index < 12 ? index + " AM" : index === 12 ? index + "  PM" : (index) % 12 + " PM"}
@@ -382,7 +382,7 @@ function Home() {
                 // setFilterOpen(false)
               }}
             >
-              {backDoctors.map((provider, providerIndex) =>
+              {backDoctors?.map((provider, providerIndex) =>
                 <option key={providerIndex} value={provider.name}>{provider.practitioner_name}</option>
               )}
               <option value={""}>Select Provider</option>
@@ -398,7 +398,7 @@ function Home() {
           <h1 className='font-bold text-lg pl-7 h-6 mt-7'>Add an appointment</h1>
           <form onSubmit={handleSubmit}>
             <div className="flex flex-wrap box-border items-center">
-              {inputs.map((data, index) => {
+              {inputs?.map((data, index) => {
                 return (
                   <div key={index} className='px-7 mt-4 w-full'>
                     <p className='text-[#8A8A8A] leading-6 '>{data.head}</p>
@@ -410,7 +410,7 @@ function Home() {
                               <select name={data.name} value={form[data.name]} key={index} onChange={handleChange} onFocus={handleChange} className='flex gap-[1vw] items-center w-full h-full rounded-md px-5 focus:outline-none focus:ring-2 focus:ring-blue-400' required={data.required} autoFocus >
                                 <option value="" disabled hidden className=' transition-all w-full px-[20px] h-full min-w-[26px]'></option>
                                 {
-                                  appointmentTypes.map((optionData, index) => {
+                                  appointmentTypes?.map((optionData, index) => {
                                     return (
                                       <option key={index} value={optionData.name} className='rounded-md transition-all w-full px-5 min-w-[26px]'>{optionData.name}</option>
                                     )
@@ -434,7 +434,7 @@ function Home() {
                                 // />
                                 ""
                                 : data.name === "practitioner" ?
-                                  <AsyncSelect key={index} defaultOptions={[{ label: "Recent Doctors", isDisabled: true, }, ...doctors.map((optionData) => ({ label: optionData.practitioner_name, value: optionData.name }))]}
+                                  <AsyncSelect key={index} defaultOptions={[{ label: "Recent Doctors", isDisabled: true, }, ...doctors?.map((optionData) => ({ label: optionData.practitioner_name, value: optionData.name }))]}
                                     loadOptions={(string, callback) => {
                                       listDoctors(string, "", 100, "", false).then((result) => {
                                         // console.log(result);
@@ -460,7 +460,7 @@ function Home() {
                                     disabled={loading}
                                   >
                                     <option value="" disabled hidden className=' transition-all w-full px-[20px] h-full min-w-[26px]'></option>
-                                    {data.options.map((optionData, index) => {
+                                    {data.options?.map((optionData, index) => {
                                       return (
                                         <option key={index} value={optionData} className='rounded-md transition-all w-full px-5 min-w-[26px]'>{optionData}</option>
                                       )

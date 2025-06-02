@@ -80,7 +80,7 @@ function Overview() {
     const setTeethAsPermenent = async () => {
         if (selectedTeeth?.length) {
             try {
-                const payload = { tooth_nos: selectedTeeth.map(tooth => tooth.tooth_no) };
+                const payload = { tooth_nos: selectedTeeth?.map(tooth => tooth.tooth_no) };
                 const result = await markTeethAsPermenent(payload, selectedPatient.name);
                 notify("Marked teeths as permanent", "success")
                 listPatientDentalChart(selectedPatient.name);
@@ -95,7 +95,7 @@ function Overview() {
     const setTeethAsPrimary = async () => {
         if (selectedTeeth?.length) {
             try {
-                const payload = { tooth_nos: selectedTeeth.map(tooth => tooth.tooth_no) };
+                const payload = { tooth_nos: selectedTeeth?.map(tooth => tooth.tooth_no) };
                 const result = await markTeethAsPrimary(payload, selectedPatient.name);
                 notify("Marked teeths as primary", "success")
                 listPatientDentalChart(selectedPatient.name);
@@ -348,7 +348,7 @@ function Overview() {
                             {/* <<<<<<<------Container Tabs------>>>>>>> */}
 
                             <ul className='flex w-full gap-2 items-center h-full text-[#616161]' >
-                                {tabs.map((tab, index) =>
+                                {tabs?.map((tab, index) =>
                                     <li key={index} className={`${currentTab === tab && "border-b-[#446DFF] border-b-4 text-[#446DFF] "} w-full max-w-[120px] h-full flex justify-center items-center custom-transition`} name={tab} onClick={() => setCurrentTab(tab)}>{tab}</li>
                                 )
                                 }
@@ -357,7 +357,7 @@ function Overview() {
                         {currentTab === "Conditions" ?
                             // display when tab is changed to Condition 
                             <div className='flex flex-col gap-2 p-3'>
-                                {dentalCondition.map((data, index) =>
+                                {dentalCondition?.map((data, index) =>
                                     <div key={index} className='p-3 border border-solid rounded flex justify-between'>
                                         {data?.name}
                                         <div className='flex gap-2'>
@@ -440,7 +440,7 @@ function Overview() {
                                 {patientTreatmentsLoading === "Loading" ?
                                     <table className="w-full table-fixed">
                                         <tbody>
-                                            {pulseRows.map((_, index) =>
+                                            {pulseRows?.map((_, index) =>
                                                 <tr key={index} className="animate-pulse h-14">
                                                     <td className='pl-6'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
                                                     <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
@@ -520,7 +520,7 @@ function Overview() {
                                     </li>
                                     : treatmentsLoading === "Loading" ?
                                         // <i className='bx bx-loader-alt animate-spin text-2xl'></i>
-                                        pulseRows.map((_, index) =>
+                                        pulseRows?.map((_, index) =>
                                             <li key={index} className={`${sidebarRightCollapse ? "max-xl:w-full" : ""} border border-solid border-[#EBEDF0] min-h-[48px] h-12 w-[48%] pl-5 rounded-lg flex items-center text-[#444648] font-medium animate-pulse bg-neutral-200`}></li>
                                         )
                                         : treatmentsLoading === "Loaded" ? "No Treatments Found"
@@ -566,7 +566,7 @@ function Overview() {
                                 })}
                                 {notes.length ? ""
                                     : notesLoading === "Loading" ?
-                                        pulseRows.map((_, index) =>
+                                        pulseRows?.map((_, index) =>
                                             <li key={index} className='min-h-[75px] p-5  flex flex-col justify-center bg-[#FDFAE1] text-[#444648] border-[#E7DBDB] rounded-sm font-medium text-xs gap-1 border box-border items-center relative animate-pulse'>
                                                 <div className='bg-[#46C31A] w-[3px] rounded-[3px] h-full absolute left-0 top-0 '></div>
                                                 <div className='bg-neutral-200 rounded h-4 w-full'></div>
@@ -598,7 +598,7 @@ function Overview() {
                     <form onSubmit={handleSubmit}>
                         <div className="flex flex-wrap box-border justify-center items-center">
                             <p className='px-7 mt-4 w-full font-medium text-sm text-center'>{selectedTreatment?.name}</p>
-                            {inputs.map((data, index) => {
+                            {inputs?.map((data, index) => {
                                 return (
                                     <div key={index} className={`${selectedTreatment?.type === "CONDITION" && data.name === "custom_paid_amount" && "hidden"} px-7 mt-4 w-full`}>
                                         <p className='text-[#8A8A8A] leading-6 '>{data.head}</p>

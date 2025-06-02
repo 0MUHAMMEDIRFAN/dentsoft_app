@@ -19,7 +19,7 @@ export const ApiContextProvider = ({ children }) => {
     const { notify } = useContext(ToastContext)
     const navigate = useNavigate()
     const { userDetails, selectedPatient, deselectPatient, searchValue } = useContext(AppContext)
-    const [profilePicture, setProfilePicture] = useState("")
+    const [profilePicture, setProfilePicture] = useState(userDetails?.user_image)
     const [profilePictureLoading, setProfilePictureLoading] = useState("Loading")
     const [patientsLoading, setPatientsLoading] = useState("Loaded")
 

@@ -1,9 +1,9 @@
 import { useFrappeGetDocList, useFrappeCreateDoc } from 'frappe-react-sdk';
 
-export const getRoleProfileList = (searchTerm: string | undefined) => {
-    const { data, error, isLoading } = useFrappeGetDocList('Role Profile', {
+export const getRoleProfileList = (searchTerm?: string | undefined) => {
+    const { data, error, isLoading, mutate } = useFrappeGetDocList('Role Profile', {
         fields: ["*"], // Optional: Specify fields to retrieve
-        // filters: [["full_name", "=", searchTerm || ""]], // Optional: Add filters
+        filters: [["role_profile", "like", `%${searchTerm}%`]], // Optional: Add filters
         limit: 20, // Optional: Limit the number of results
         orderBy: { field: "modified", order: "desc" } // Optional: Sort results
     });
@@ -15,12 +15,8 @@ export const getRoleProfileList = (searchTerm: string | undefined) => {
         {
             data: data || [],
             isLoading,
-            error
-            //     && data.map(doc => (
-
-            //     { doc.name } - { doc.field1 }
-
-            // ))
+            error,
+            mutate
         }
 
     );

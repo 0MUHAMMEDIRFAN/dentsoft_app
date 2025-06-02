@@ -11,6 +11,13 @@ import { ToastContextProvider } from './contexts/ToastContext.tsx'
 import { AppContextProvider } from './contexts/AppContext.tsx'
 import { ApiContextProvider } from './contexts/ApiContext.tsx'
 import UserManagement from './pages/UserManagement.tsx'
+import Schemes from './pages/Schemes.tsx'
+import Treatments from './pages/Treatments.tsx'
+import Payments from './pages/Payments.tsx'
+import Appointments from './pages/Appointments.tsx'
+import Documents from './pages/Documents.tsx'
+import MedicalHistory from './pages/MedicalHistory.tsx'
+import ReportAnalysis from './pages/ReportandAnanysis.tsx'
 
 function App() {
 	// const router = createBrowserRouter(
@@ -29,8 +36,8 @@ function App() {
 	// const { currentUser } = useFrappeAuth();
 	return (
 		<FrappeProvider
-		// url='localhost:9004'
-		
+			// url='localhost:9004'
+			enableSocket={true}
 			socketPort={import.meta.env.VITE_SOCKET_PORT}
 			siteName={getSiteName()}
 		>
@@ -45,16 +52,25 @@ function App() {
 									<Route path='/' element={<ProtectedRoute />} >
 										<Route path='/' element={<MainLayout />} >
 											<Route path="" element={<Home />} />
-											<Route path="/patient/overview" element={<Overview />} />
-											<Route path="user-managment" element={<UserManagement />} />
-											{/* <Route path="/patient/overview" element={<Overview />}  /> */}
+											{/* {selectedPatient ?
+												<> */}
+													<Route path="/patient/overview" element={<Overview />} exact />
+													<Route path="patient/appointments" element={<Appointments />} exact />
+													<Route path="patient/documents" element={<Documents />} exact />
+													<Route path="patient/medicalhistory" element={<MedicalHistory />} exact />
+													<Route path="patient/payments" element={<Payments />} exact />
+												{/* </> : <> */}
+													{/* {userDetails?.name === "admin" && <Route path="user-managment" element={<UserManagement />} exact />} */}
+													<Route path="user-managment" element={<UserManagement />} exact />
+													<Route path="report-and-analysis" element={<ReportAnalysis />} exact />
+													<Route path="schemes" element={<Schemes />} exact />
+													<Route path="treatments" element={<Treatments />} exact />
+												{/* </>} */}
 										</Route>
 										<Route path="dentalChart" element={<Overview />} />
 									</Route>
 									<Route path='/login' element={<AuthRedirect />}>
-										<Route path='' element={<Login />}>
-
-										</Route>
+										<Route path='' element={<Login />}></Route>
 									</Route>
 								</Routes>
 							</ApiContextProvider>

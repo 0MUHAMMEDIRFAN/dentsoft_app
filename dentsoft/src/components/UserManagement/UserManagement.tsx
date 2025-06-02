@@ -14,7 +14,7 @@ import { createRole, deleteRole, getPermissions, getRoles, updateRole } from '..
 import { fileUpload, getFile } from '../../Api/CommonApi';
 import { AppContext } from '../../contexts/AppContext';
 import { ApiContext } from '../../contexts/ApiContext';
-import { createUser, getUserList } from '../../hooks/useUser';
+import { createUser, getActivityLog, getUserList } from '../../hooks/useUser';
 import { getRoleProfileList } from '../../hooks/useRole';
 import { useFrappeCreateDoc } from 'frappe-react-sdk';
 
@@ -27,13 +27,13 @@ function UserManagement() {
     const [userButton, setUserButton] = useState(true);
     const [roleButton, setRoleButton] = useState(true);
     const [isUserOpen, setIsAddUserOpen] = useState(false)
-    const [usersLoading, setUsersLoading] = useState("Loaded")
+    // const [usersLoading, setUsersLoading] = useState("Loaded")
     const [isAddRoleOpen, setIsAddRoleOpen] = useState(false)
     const [isConfirmBoxOpen, setIsConfirmBoxOpen] = useState(false)
     const [confirmBoxValue, setConfirmBoxValue] = useState("")
     const [confirmBoxError, setConfirmBoxError] = useState("")
-    const [rolesLoading, setRolesLoading] = useState("Loaded")
-    const [activityLoading, setActivityLoading] = useState("Loaded")
+    // const [rolesLoading, setRolesLoading] = useState("Loaded")
+    // const [activityLoading, setActivityLoading] = useState("Loaded")
     const [selectedUserId, setSelectedUserId] = useState("")
     const [selectedRole, setSelectedRole] = useState({})
     const [selectedPicture, setSelectedPicture] = useState("")
@@ -48,7 +48,7 @@ function UserManagement() {
     const [searchRole, setSearchRole] = useState("");
     // const [roles, setRoles] = useState([])
     // const [users, setUsers] = useState([])
-    const [activity, setActivity] = useState([])
+    // const [activity, setActivity] = useState([])
     const [activityDate, setActivityDate] = useState(moment(new Date).format("YYYY-MM-DD"))
     const [permissions, setPermissions] = useState([])
     const [permissionsCatogery, setPermissionsCatogery] = useState({
@@ -111,7 +111,7 @@ function UserManagement() {
             })
             )
             : setRoleForm((prev) => {
-                const index = prev.roles.findIndex(role => role.role === value);
+                const index = prev.roles?.findIndex(role => role.role === value);
                 if (index != -1) {
                     const list = [...prev.roles]
                     list.splice(index, 1);
@@ -125,25 +125,26 @@ function UserManagement() {
             );
     }
 
-    const { data: users } = getUserList()
-    const { data: roles } = getRoleProfileList()
-    const { createDoc, isCompleted, error, loading:createLoading } = useFrappeCreateDoc();
+    const { data: users, isLoading: usersLoading, error: usersError, mutate: refreshUsers } = getUserList(searchUser, currentTab === "Active Users", usersMeta?.size, userRole);
+    const { data: roles, isLoading: rolesLoading, error: rolesError, mutate: refreshRoles } = getRoleProfileList(searchRole, rolesMeta?.size)
+    const { data: activity, isLoading: activityLoading, error: activityError, mutate: refreshActivity } = getActivityLog(activityDate)
+    const { createDoc, isCompleted, error, loading: createLoading } = useFrappeCreateDoc();
 
 
 
     const listUsers = async (search = "", page = 0, size = "", active = "", role = "") => {
-        setUsersLoading("Loading")
-        setUsers([])
+        // setUsersLoading("Loading")
+        // setUsers([])
         try {
             const result = await getUsers(search, page, size, active, role);
             console.log(result.data)
             // page ? (setUsers(prev => ([...users, ...result.data.data])), setUserPage(userPage + 1)) : (setUsers(result.data.data), setUserPage(1))
-            setUsers(result.data.data)
+            // setUsers(result.data.data)
             setUsersMeta(result.data.meta)
-            setUsersLoading("Loaded")
+            // setUsersLoading("Loaded")
         } catch (error) {
             console.log(error)
-            setUsersLoading("Error")
+            // setUsersLoading("Error")
         }
     }
     const listActivity = async (date = "", page = 0, size = "") => {
@@ -165,13 +166,13 @@ function UserManagement() {
         notify("", "error")
         try {
             // const payload = fileData ? { ...userForm, profile_photo: fileData } : userForm
-            const result = await createDoc('User',userForm)
+            const result = await createDoc('User', userForm)
             // const result = await registerUser(payload)
             notify("User Added SuccessFully", "success")
             setLoading(false)
             closeModal();
             console.log(result)
-            listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole)
+            // listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole)
         } catch (error) {
             console.log(error)
             setLoading(false)
@@ -191,7 +192,7 @@ function UserManagement() {
                 // localStorage.setItem("userDetails", JSON.stringify(result));
                 // setUserDetails(result);
             }
-            listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole);
+            // listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole);
             setLoading(false)
             notify("User Updated Successfully", "success")
             closeModal()
@@ -472,11 +473,13 @@ function UserManagement() {
             {/* <<<<<<<<<<----------Table Container---------->>>>>>>>>> */}
 
             <div>
+                {/* <<<<<<------Tabs & Search------>>>>>> */}
                 <div className='flex items-center justify-between'>
                     {/* The Tabs switching buttons are in below div  */}
                     <div className='text-[#5DB370] flex gap-1'>
                         {tabs.map((tab, index) =>
-                            <button key={index} className={`${currentTab === tab ? "bg-[#5DB370] text-white" : "hover:bg-[#5db37033]"} rounded-md border-[#5DB370] border-[.5px] border-solid h-10 px-4 font-semibold custom-transition`} name={tab} onClick={(event) => { setcurrentTab(tab); (tab === "Active Users" || tab === "Inactive Users") ? listUsers(searchUser, "", usersMeta?.size, `${tab === "Active Users"}`, userRole) : (tab === "Roles" && listRoles(searchRole, rolesMeta?.page, rolesMeta?.size)) }}>{tab}</button>
+                            // <button key={index} className={`${currentTab === tab ? "bg-[#5DB370] text-white" : "hover:bg-[#5db37033]"} rounded-md border-[#5DB370] border-[.5px] border-solid h-10 px-4 font-semibold custom-transition`} name={tab} onClick={(event) => { setcurrentTab(tab); (tab === "Active Users" || tab === "Inactive Users") ? listUsers(searchUser, "", usersMeta?.size, `${tab === "Active Users"}`, userRole) : (tab === "Roles" && listRoles(searchRole, rolesMeta?.page, rolesMeta?.size)) }}>{tab}</button>
+                            <button key={index} className={`${currentTab === tab ? "bg-[#5DB370] text-white" : "hover:bg-[#5db37033]"} rounded-md border-[#5DB370] border-[.5px] border-solid h-10 px-4 font-semibold custom-transition`} name={tab} onClick={(event) => { setcurrentTab(tab); }}>{tab}</button>
                         )}
                     </div>
                     <div className='flex gap-3 items-center'>
@@ -489,7 +492,8 @@ function UserManagement() {
                             currentTab != "Activity" &&
                             < div className='flex border border-solid bg-white border-[#EBEDF0] max-w-[200px] rounded-[20px] h-10 items-center px-4 gap-2 '>
                                 <i className='bx bx-search text-[#C5C5C5] text-xl'></i>
-                                <input type="search" placeholder='Search Users' className='outline-none w-full bg-transparent' value={searchUser} onChange={(event) => { listUsers(event.target.value, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole); setSearchUser(event.target.value) }} />
+                                <input type="search" placeholder='Search Users' className='outline-none w-full bg-transparent' value={searchUser} onChange={(event) => { setSearchUser(event.target.value) }} />
+                                {/* <input type="search" placeholder='Search Users' className='outline-none w-full bg-transparent' value={searchUser} onChange={(event) => { listUsers(event.target.value, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole); setSearchUser(event.target.value) }} /> */}
                             </div>
                         }
                         {/* this block for Add button | add user OR add role */}
@@ -497,7 +501,7 @@ function UserManagement() {
                             <label htmlFor='activityDate' className="border border-solid border-[#DADCE0] bg-white rounded-md px-3 py-1 hover:bg-gray-200" onClick={() => ""}>
                                 {activityDate === moment(new Date).format("YYYY-MM-DD") ? "Today" : activityDate}
                                 <span className='text-xs'>&#9660;</span>
-                                <input id='activityDate' type="date" max={moment(new Date).format("YYYY-MM-DD")} value={activityDate} onChange={(event) => { setActivityDate(event.target.value); listActivity(event.target.value, activityMeta?.page, activityMeta?.size); }} onFocus={(event) => event.target.showPicker()} onClick={(event) => event.target.showPicker()} className='opacity-0 absolute right-0' />
+                                <input id='activityDate' type="date" max={moment(new Date).format("YYYY-MM-DD")} value={activityDate} onChange={(event) => { setActivityDate(event.target.value) }} onFocus={(event) => event.target.showPicker()} onClick={(event) => event.target.showPicker()} className='opacity-0 absolute right-0' />
                             </label>
                             :
                             currentTab == "Roles" ?
@@ -508,237 +512,54 @@ function UserManagement() {
                     </div>
                 </div>
 
-                {currentTab === "Roles" ?
+                {currentTab === "Active Users" || currentTab === "Inactive Users" ?
 
-                    /* <<<<<<<<<<----------Role Table---------->>>>>>>>>> */
+                    /* <<<<<<<<<<----------User Table---------->>>>>>>>>> */
 
-                    <div className='overflow-auto mt-6  rounded-md drop-shadow'>
+                    <div className=' mt-6 rounded-md drop-shadow'>
                         <table className='w-full table-fixed bg-white'>
+                            {/* Table Head */}
                             <thead className="text-[#8B8B8B]">
                                 <tr className='h-16 text-[#303030]'>
-                                    <th className='pl-9'>Name</th>
-                                    <th className='w-1/12 text-center'>Users</th>
-                                    <th className='w-1/5'>Description</th>
-                                    <th>Created </th>
-                                    <th>Last Updated</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody className='text-[#444648]'>
-                                {roles.map((data, index) => {
-                                    return (
-                                        <tr key={index} className='box-border h-14'>
-                                            <td className='pl-9'>{data.name}</td>
-                                            <td className='text-center'>{data._count?.User}</td>
-                                            <td>{data.custom_role_description}</td>
-                                            <td>{moment(data.creation).format("DD-MMM-YYYY , hh:mm:ss A")}</td>
-                                            <td>{moment(data.modified).format("DD-MMM-YYYY , hh:mm:ss A")}</td>
-                                            <td>
-                                                <div className='flex gap-2'>
-                                                    <button className='border border-solid rounded border-[#A0A3A6] text-[#444648] px-3' onClick={() => {
-                                                        setRoleButton(false)
-                                                        setRoleForm({
-                                                            role_profile: data.name,
-                                                            custom_role_description: data.custom_role_description,
-                                                            role: "",
-                                                            roles: [],
-                                                        })
-                                                        openAddRoleModal();
-                                                        setSelectedRole({ id: data.name })
-                                                    }}>Edit</button>
-                                                    <button className='border border-solid rounded border-[#FF3C5F] text-[#FF3C5F] px-3' onClick={() => { setIsConfirmBoxOpen(true), setSelectedRole({ id: data.name, name: data.name }) }}>Delete</button>
-                                                </div>
-                                            </td>
-                                        </tr>
-
-                                    )
-                                })}
-                            </tbody>
-                        </table>
-                        {roles.length ?
-                            <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
-                                <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => listRoles(searchRole, rolesMeta?.page, rolesMeta?.size)}></i>
-                                <p>Total Roles :&nbsp; {roles.length} / {rolesMeta?.total}</p>
-                                <p>Page {rolesMeta?.page + 1} of {Math.floor(((rolesMeta?.total - 1) / rolesMeta?.size) + 1)}</p>
-                                <div className={`${rolesMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { rolesMeta?.page != 0 && listRoles(searchRole, rolesMeta?.page - 1, rolesMeta?.size) }}>
-                                    &lt;
-                                </div>
-                                <div className={`${rolesMeta?.page < Math.floor((rolesMeta?.total - 1) / rolesMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { rolesMeta?.page < Math.floor((rolesMeta?.total - 1) / rolesMeta?.size) && listRoles(searchRole, rolesMeta?.page + 1, rolesMeta?.size) }}>
-                                    &gt;
-                                </div>
-                                <p>size :
-                                    <select name="" id="" value={rolesMeta?.size} onChange={(event) => listRoles(searchRole, "", event.target.value)} className='default-select-icon'>
-                                        <option value="5">5 </option>
-                                        <option value="10">10 </option>
-                                        <option value="15">15 </option>
-                                        <option value="20">20 </option>
-                                        <option value="50">50 </option>
-                                    </select>
-                                </p>
-                            </div>
-                            : <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
-                                {rolesLoading === "Loading" ?
-                                    <table className="w-full table-fixed">
-                                        <tbody>
-                                            {pulseRows.map((_, index) =>
-                                                <tr key={index} className="animate-pulse h-14">
-                                                    <td className="pl-9"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td className='w-1/12'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td className='w-1/5'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                </tr>
-                                            )}
-                                            <tr className="animate-pulse h-11">
-                                                <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                    : rolesLoading === "Loaded" ? `No Roles Found`
-                                        : <div className='flex flex-col justify-center items-center'>
-                                            <p>Error while Loading {currentTab}</p>
-                                            <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listRoles(searchRole, rolesMeta?.page, rolesMeta?.size)}>Try Again</button>
-                                        </div>}
-                            </div>
-                        }
-                    </div>
-
-                    :
-                    currentTab === "Activity" ?
-
-                        /* <<<<<<<<<<----------Activity Table---------->>>>>>>>>> */
-
-                        <div className='overflow-auto mt-6  rounded-md drop-shadow'>
-                            <table className='w-full table-fixed bg-white'>
-                                <thead className="text-[#8B8B8B]">
-                                    <tr className='h-16 text-[#303030]'>
-                                        <th className='pl-9 w-2/5'>Activity</th>
-                                        <th>Time</th>
-                                        <th>Location</th>
-                                        <th>Updated At</th>
-                                    </tr>
-                                </thead>
-                                <tbody className='text-[#444648]'>
-                                    {activity.map((data, index) => {
-                                        return (
-                                            <tr key={index} className='box-border h-14'>
-                                                {/* <td className='pl-9'>{parse(data.subject)}</td> */}
-                                                <td>{moment(data.modified).format("hh:mm:ss A")}</td>
-                                                {/* <td>{moment(data.modified).format("DD-MMM-YYYY")}</td> */}
-                                                <td>{data.ip_address}</td>
-                                                <td>{moment(data.modified).format("DD-MMM-YYYY")}</td>
-                                            </tr>
-                                        )
-                                    })}
-                                </tbody>
-                            </table>
-                            {activity.length ?
-                                // (activity.length / 10 === activityPage) &&
-                                // <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
-                                //     {activityLoading === "Loading" ?
-                                //         <i className='bx bx-loader-alt animate-spin text-2xl'></i>
-                                //         : <button className='bg-gray-300 border rounded h-5 px-2 font-medium hover:bg-gray-200' onClick={() => { listActivity(activityDate, activityPage); }}>Load more...</button>
-                                //     }
-                                // </div>
-                                <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
-                                    <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => listActivity(activityDate, activityMeta?.page, activityMeta?.size)}></i>
-                                    <p>Total activities :&nbsp; {activity.length} / {activityMeta?.total}</p>
-                                    <p>Page {activityMeta?.page + 1} of {Math.floor(((activityMeta?.total - 1) / activityMeta?.size) + 1)}</p>
-                                    <div className={`${activityMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { activityMeta?.page != 0 && listActivity(activityDate, activityMeta?.page - 1, activityMeta?.size) }}>
-                                        &lt;
-                                    </div>
-                                    <div className={`${activityMeta?.page < Math.floor((activityMeta?.total - 1) / activityMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { activityMeta?.page < Math.floor((activityMeta?.total - 1) / activityMeta?.size) && listActivity(activityDate, activityMeta?.page + 1, activityMeta?.size) }}>
-                                        &gt;
-                                    </div>
-                                    <p>size :
-                                        <select name="" id="" value={activityMeta?.size} onChange={(event) => listActivity(activityDate, "", event.target.value)} className='default-select-icon'>
-                                            <option value="5">5 </option>
-                                            <option value="10">10 </option>
-                                            <option value="15">15 </option>
-                                            <option value="20">20 </option>
-                                            <option value="50">50 </option>
-                                        </select>
-                                    </p>
-                                </div>
-                                : <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
-                                    {activityLoading === "Loading" ?
-                                        // <i className='bx bx-loader-alt animate-spin text-2xl'></i>
-                                        <table className="w-full table-fixed">
-                                            <tbody>
-                                                {pulseRows.map((_, index) =>
-                                                    <tr key={index} className="animate-pulse h-14">
-                                                        <td className="pl-9 w-2/5"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    </tr>
-                                                )}
-                                                <tr className="animate-pulse h-11">
-                                                    <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
-                                                    <td></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        : activityLoading === "Loaded" ? "No Activities Found"
-                                            : <div className='flex flex-col justify-center items-center'>
-                                                <p>Error while Loading Activities</p>
-                                                <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listActivity(activityDate, activityMeta?.page, activityMeta?.size)}>Try Again</button>
-                                            </div>}
-                                </div>
-                            }
-                        </div>
-                        :
-
-                        /* <<<<<<<<<<----------User Table---------->>>>>>>>>> */
-
-                        <div className=' mt-6  rounded-md drop-shadow'>
-                            <table className='w-full table-fixed bg-white'>
-                                <thead className="text-[#8B8B8B]">
-                                    <tr className='h-16 text-[#303030]'>
-                                        <th className='pl-9 w-1/6'>Name</th>
-                                        <th className='w-1/4'>Email ID</th>
-                                        <th>Role</th>
-                                        <th className='w-[10%]'>Status</th>
-                                        <th >Last Login</th>
-                                        <th className='pr-2 w-[12%]'>
-                                            {/* <select name="" id="" className='border border-solid rounded-md px-2 w-full' value={userRole} onChange={(event) => { listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, event.target.value); setUserRole(event.target.value) }}>
+                                    <th className='pl-9 w-1/6'>Name</th>
+                                    <th className='w-1/4'>Email ID</th>
+                                    <th>Role</th>
+                                    <th className='w-[10%]'>Status</th>
+                                    <th >Last Login</th>
+                                    <th className='pr-2 w-[12%]'>
+                                        {/* <select name="" id="" className='border border-solid rounded-md px-2 w-full' value={userRole} onChange={(event) => { listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, event.target.value); setUserRole(event.target.value) }}>
                                                 <option value="">All</option>
                                                 {roles.map((option, index) =>
                                                     <option key={index} value={option.name}>{option.name}</option>
                                                 )}
                                             </select> */}
-                                            <Fragment >
-                                                <AsyncSelect defaultOptions={[{ label: "All", value: "" }, ...roles.map((optionData) => ({ label: optionData.name, value: optionData.name }))]}
-                                                    loadOptions={(string, callback) => {
-                                                        listRoles(string, "", 15).then((result) => {
-                                                            console.log();
-                                                            callback([{ label: "All", value: "" }, ...result.map((optionData) => ({ label: optionData.name, value: optionData.name }))])
-                                                        }).catch((error) => {
-                                                            console.log("Error while loading Roles for add user modal", error);
-                                                            callback();
-                                                        })
-                                                    }}
-                                                    onChange={(selected) => { console.log(selected), listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, selected.value); setUserRole(selected.value) }}
-                                                    className="w-full h-full py-2"
-                                                    classNamePrefix="select"
-                                                    name=""
-                                                    required
-                                                    defaultValue={{ value: "", label: userRole || "All" }}
-                                                    isDisabled={loading}
-                                                />
-                                            </Fragment>
-                                        </th>
-                                    </tr>
-                                </thead>
+                                        <Fragment >
+                                            <AsyncSelect defaultOptions={[{ label: "All", value: "" }, ...roles?.map((optionData) => ({ label: optionData.name, value: optionData.name }))]}
+                                                loadOptions={(string, callback) => {
+                                                    listRoles(string, "", 15).then((result) => {
+                                                        console.log();
+                                                        callback([{ label: "All", value: "" }, ...result.map((optionData) => ({ label: optionData.name, value: optionData.name }))])
+                                                    }).catch((error) => {
+                                                        console.log("Error while loading Roles for add user modal", error);
+                                                        callback();
+                                                    })
+                                                }}
+                                                onChange={(selected) => { console.log(selected), listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, selected.value); setUserRole(selected.value) }}
+                                                className="w-full h-full py-2"
+                                                classNamePrefix="select"
+                                                name=""
+                                                required
+                                                defaultValue={{ value: "", label: userRole || "All" }}
+                                                isDisabled={loading}
+                                            />
+                                        </Fragment>
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            {!usersLoading || usersError ?
                                 <tbody className='text-[#444648]'>
+                                    {/* Table body */}
                                     {users?.map((data, index) => {
                                         return (
                                             <tr key={index} className='box-border h-14'>
@@ -771,62 +592,248 @@ function UserManagement() {
 
                                         )
                                     })}
+                                </tbody> :
+                                <tbody>
+                                    {/* Table Loading pulse */}
+                                    {pulseRows.map((_, index) =>
+                                        <tr key={index} className="animate-pulse h-14">
+                                            <td className="pl-9 w-1/6"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td className='w-1/4'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td className='w-[10%]'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td className='w-[12%]'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                        </tr>
+                                    )}
+                                    <tr className="animate-pulse h-11">
+                                        <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                    </tr>
                                 </tbody>
-                            </table>
-                            {users?.length ?
-                                <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
-                                    <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole)}></i>
-                                    <p>Total {currentTab} :&nbsp; {users.length} / {usersMeta?.total}</p>
-                                    <p>Page {usersMeta?.page + 1} of {Math.floor(((usersMeta?.total - 1) / usersMeta?.size) + 1)}</p>
-                                    <div className={`${usersMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { usersMeta?.page != 0 && listUsers(searchUser, usersMeta?.page - 1, usersMeta?.size, `${currentTab === "Active Users"}`, userRole) }}>
-                                        &lt;
-                                    </div>
-                                    <div className={`${usersMeta?.page < Math.floor((usersMeta?.total - 1) / usersMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { usersMeta?.page < Math.floor((usersMeta?.total - 1) / usersMeta?.size) && listUsers(searchUser, usersMeta?.page + 1, usersMeta?.size, `${currentTab === "Active Users"}`, userRole) }}>
-                                        &gt;
-                                    </div>
-                                    <p>size :
-                                        <select name="" id="" defaultValue={usersMeta?.size} onChange={(event) => listUsers(searchUser, "", event.target.value, `${currentTab === "Active Users"}`, userRole)} className='default-select-icon'>
-                                            <option value="5">5 </option>
-                                            <option value="10">10 </option>
-                                            <option value="15">15 </option>
-                                            <option value="20">20 </option>
-                                            <option value="50">50 </option>
-                                        </select>
-                                    </p>
-                                </div>
-                                :
-                                <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
-                                    {usersLoading === "Loading" ?
-                                        <table className="w-full table-fixed">
-                                            <tbody>
-                                                {pulseRows.map((_, index) =>
-                                                    <tr key={index} className="animate-pulse h-14">
-                                                        <td className="pl-9 w-1/6"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td className='w-1/4'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td className='w-[10%]'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                        <td className='w-[12%]'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    </tr>
-                                                )}
-                                                <tr className="animate-pulse h-11">
-                                                    <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                    <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        : usersLoading === "Loaded" ? `No ${currentTab} Found`
-                                            : <div className='flex flex-col justify-center items-center'>
-                                                <p>Error while Loading {currentTab}</p>
-                                                <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listUsers(searchUser, usersMeta?.page, usersMeta?.size, `${currentTab === "Active Users"}`, userRole)}>Try Again</button>
-                                            </div>}
-                                </div>
                             }
+                        </table>
+
+                        {!usersLoading && (
+                            usersError ?
+                                <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
+                                    {/* Table Error */}
+                                    <p>Error while Loading {currentTab}</p>
+                                    <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => refreshUsers()}>Try Again</button>
+                                </div>
+                                : users?.length ?
+                                    <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
+                                        {/* Tabel Bottom */}
+                                        <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => refreshUsers()}></i>
+                                        <p>Total {currentTab} :&nbsp; {users?.length} / {usersMeta?.total}</p>
+                                        <p>Page {usersMeta?.page + 1} of {Math.floor(((usersMeta?.total - 1) / usersMeta?.size) + 1)}</p>
+                                        <div className={`${usersMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { usersMeta?.page != 0 && listUsers(searchUser, usersMeta?.page - 1, usersMeta?.size, `${currentTab === "Active Users"}`, userRole) }}>
+                                            &lt;
+                                        </div>
+                                        <div className={`${usersMeta?.page < Math.floor((usersMeta?.total - 1) / usersMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { usersMeta?.page < Math.floor((usersMeta?.total - 1) / usersMeta?.size) && listUsers(searchUser, usersMeta?.page + 1, usersMeta?.size, `${currentTab === "Active Users"}`, userRole) }}>
+                                            &gt;
+                                        </div>
+                                        <p>size :
+                                            <select name="" id="" defaultValue={usersMeta?.size} onChange={(event) => listUsers(searchUser, "", event.target.value, `${currentTab === "Active Users"}`, userRole)} className='default-select-icon'>
+                                                <option value="5">5 </option>
+                                                <option value="10">10 </option>
+                                                <option value="15">15 </option>
+                                                <option value="20">20 </option>
+                                                <option value="50">50 </option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    : <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
+                                        No {currentTab} Found
+                                    </div>
+                        )}
+                    </div> :
+                    currentTab === "Roles" ?
+
+                        /* <<<<<<<<<<----------Role Table---------->>>>>>>>>> */
+
+                        <div className='overflow-auto mt-6  rounded-md drop-shadow'>
+                            <table className='w-full table-fixed bg-white'>
+                                <thead className="text-[#8B8B8B]">
+                                    <tr className='h-16 text-[#303030]'>
+                                        <th className='pl-9'>Name</th>
+                                        <th className='w-1/12 text-center'>Users</th>
+                                        <th className='w-1/5'>Description</th>
+                                        <th>Created </th>
+                                        <th>Last Updated</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+
+                                {!rolesLoading || rolesError ?
+                                    <tbody className='text-[#444648]'>
+                                        {roles?.map((data, index) => {
+                                            return (
+                                                <tr key={index} className='box-border h-14'>
+                                                    <td className='pl-9'>{data.name}</td>
+                                                    <td className='text-center'>{data._count?.User}</td>
+                                                    <td>{data.custom_role_description}</td>
+                                                    <td>{moment(data.creation).format("DD-MMM-YYYY , hh:mm:ss A")}</td>
+                                                    <td>{moment(data.modified).format("DD-MMM-YYYY , hh:mm:ss A")}</td>
+                                                    <td>
+                                                        <div className='flex gap-2'>
+                                                            <button className='border border-solid rounded border-[#A0A3A6] text-[#444648] px-3' onClick={() => {
+                                                                setRoleButton(false)
+                                                                setRoleForm({
+                                                                    role_profile: data.name,
+                                                                    custom_role_description: data.custom_role_description,
+                                                                    role: "",
+                                                                    roles: [],
+                                                                })
+                                                                openAddRoleModal();
+                                                                setSelectedRole({ id: data.name })
+                                                            }}>Edit</button>
+                                                            <button className='border border-solid rounded border-[#FF3C5F] text-[#FF3C5F] px-3' onClick={() => { setIsConfirmBoxOpen(true), setSelectedRole({ id: data.name, name: data.name }) }}>Delete</button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            )
+                                        })}
+                                    </tbody>
+                                    : <tbody>
+                                        {pulseRows.map((_, index) =>
+                                            <tr key={index} className="animate-pulse h-14">
+                                                <td className="pl-9"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td className='w-1/12'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td className='w-1/5'><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            </tr>
+                                        )}
+                                        <tr className="animate-pulse h-11">
+                                            <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+
+                            {!rolesLoading && (rolesError ?
+                                <div className='flex flex-col justify-center items-center'>
+                                    <p>Error while Loading {currentTab}</p>
+                                    <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listRoles(searchRole, rolesMeta?.page, rolesMeta?.size)}>Try Again</button>
+                                </div>
+                                : roles?.length ?
+                                    <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
+                                        <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => refreshRoles()}></i>
+                                        <p>Total Roles :&nbsp; {roles?.length} / {rolesMeta?.total}</p>
+                                        <p>Page {rolesMeta?.page + 1} of {Math.floor(((rolesMeta?.total - 1) / rolesMeta?.size) + 1)}</p>
+                                        <div className={`${rolesMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { rolesMeta?.page != 0 && listRoles(searchRole, rolesMeta?.page - 1, rolesMeta?.size) }}>
+                                            &lt;
+                                        </div>
+                                        <div className={`${rolesMeta?.page < Math.floor((rolesMeta?.total - 1) / rolesMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { rolesMeta?.page < Math.floor((rolesMeta?.total - 1) / rolesMeta?.size) && listRoles(searchRole, rolesMeta?.page + 1, rolesMeta?.size) }}>
+                                            &gt;
+                                        </div>
+                                        <p>size :
+                                            <select name="" id="" value={rolesMeta?.size} onChange={(event) => listRoles(searchRole, "", event.target.value)} className='default-select-icon'>
+                                                <option value="5">5 </option>
+                                                <option value="10">10 </option>
+                                                <option value="15">15 </option>
+                                                <option value="20">20 </option>
+                                                <option value="50">50 </option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    : <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
+                                        No Roles Found
+                                    </div>
+                            )}
                         </div>
+
+                        :
+                        /* <<<<<<<<<<----------Activity Table---------->>>>>>>>>> */
+
+                        <div className='overflow-auto mt-6  rounded-md drop-shadow'>
+                            <table className='w-full table-fixed bg-white'>
+                                {/* Table Head */}
+                                <thead className="text-[#8B8B8B]">
+                                    <tr className='h-16 text-[#303030]'>
+                                        <th className='pl-9 w-2/5'>Activity</th>
+                                        <th>Time</th>
+                                        <th>Location</th>
+                                        <th>Updated At</th>
+                                    </tr>
+                                </thead>
+                                {!activityLoading || activityError ?
+                                    <tbody className='text-[#444648]'>
+                                        {activity?.map((data, index) => {
+                                            return (
+                                                <tr key={index} className='box-border h-14'>
+                                                    <td className='pl-9'>{<span dangerouslySetInnerHTML={{ __html: data.subject }} />}</td>
+                                                    <td>{moment(data.modified).format("hh:mm:ss A")}</td>
+                                                    {/* <td>{moment(data.modified).format("DD-MMM-YYYY")}</td> */}
+                                                    <td>{data.ip_address}</td>
+                                                    <td>{moment(data.modified).format("DD-MMM-YYYY")}</td>
+                                                </tr>
+                                            )
+                                        })}
+                                    </tbody>
+                                    : <tbody>
+                                        {pulseRows.map((_, index) =>
+                                            <tr key={index} className="animate-pulse h-14">
+                                                <td className="pl-9 w-2/5"><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                                <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            </tr>
+                                        )}
+                                        <tr className="animate-pulse h-11">
+                                            <td className='pl-9'><div className='bg-neutral-200 rounded h-4 w-5'></div></td>
+                                            <td></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                            <td><div className='bg-neutral-200 rounded h-4 mr-2'></div></td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            </table>
+
+                            {!activityLoading && (activityError ?
+                                <div className='flex flex-col justify-center items-center'>
+                                    <p>Error while Loading Activities</p>
+                                    <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => refreshActivity()}>Try Again</button>
+                                </div>
+                                : activity?.length ?
+                                    <div className='box-border h-11 bg-white flex gap-5 justify-end items-center pl-9 p-2'>
+                                        <i className='bx bx-rotate-right mr-auto cursor-pointer text-lg' onClick={() => refreshActivity()}></i>
+                                        <p>Total activities :&nbsp; {activity?.length} / {activityMeta?.total}</p>
+                                        <p>Page {activityMeta?.page + 1} of {Math.floor(((activityMeta?.total - 1) / activityMeta?.size) + 1)}</p>
+                                        <div className={`${activityMeta?.page != 0 ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { activityMeta?.page != 0 && listActivity(activityDate, activityMeta?.page - 1, activityMeta?.size) }}>
+                                            &lt;
+                                        </div>
+                                        <div className={`${activityMeta?.page < Math.floor((activityMeta?.total - 1) / activityMeta?.size) ? "hover:bg-gray-300 cursor-pointer" : "text-gray-400 cursor-not-allowed"} flex justify-center items-center rounded-full w-6 h-6 text-base select-none`} onClick={() => { activityMeta?.page < Math.floor((activityMeta?.total - 1) / activityMeta?.size) && listActivity(activityDate, activityMeta?.page + 1, activityMeta?.size) }}>
+                                            &gt;
+                                        </div>
+                                        <p>size :
+                                            <select name="" id="" value={activityMeta?.size} onChange={(event) => listActivity(activityDate, "", event.target.value)} className='default-select-icon'>
+                                                <option value="5">5 </option>
+                                                <option value="10">10 </option>
+                                                <option value="15">15 </option>
+                                                <option value="20">20 </option>
+                                                <option value="50">50 </option>
+                                            </select>
+                                        </p>
+                                    </div>
+                                    : <div className='box-border min-h-[60px] bg-white flex justify-center items-center'>
+                                        No Activities Found
+                                    </div>
+                            )}
+                        </div>
+
+
                 }
             </div>
 
@@ -883,7 +890,7 @@ function UserManagement() {
                                                                                 obj.type === "select" ?
                                                                                     data.name === "role_profile_name" ?
                                                                                         <Fragment key={index}>
-                                                                                            <AsyncSelect key={index} defaultOptions={[{ label: "Recent Roles", isDisabled: true, }, ...roles.map((optionData) => ({ label: optionData.name, value: optionData.name }))]}
+                                                                                            <AsyncSelect key={index} defaultOptions={[{ label: "Recent Roles", isDisabled: true, }, ...roles?.map((optionData) => ({ label: optionData.name, value: optionData.name }))]}
                                                                                                 loadOptions={(string, callback) => {
                                                                                                     listRoles(string, "", 15).then((result) => {
                                                                                                         // console.log(result);

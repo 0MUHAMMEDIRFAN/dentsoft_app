@@ -1,4 +1,3 @@
-import React from 'react'
 import DentalChart from '../components/DentalChart'
 import OverviewComp from '../components/Overview/Overview'
 function Overview() {

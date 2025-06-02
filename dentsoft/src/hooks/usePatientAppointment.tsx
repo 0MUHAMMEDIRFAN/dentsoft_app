@@ -1,33 +1,29 @@
 import { useFrappeGetDocList } from 'frappe-react-sdk';
 
-export const getPatientAppointmentList = (searchTerm: string | undefined, patient: string | undefined) => {
-    const { data, error, isLoading } = useFrappeGetDocList(
+export const getPatientAppointmentList = (searchTerm?: string, patient?: string) => {
+    const filters: any[] = [];
+    if (searchTerm) {
+        filters.push(
+            ["name", "like", `%${searchTerm}%`],
+            ["title", "like", `%${searchTerm}%`]
+        );
+    }
+    if (patient) {
+        filters.push(["patient", "=", patient]);
+    }
+    const { data, error, isLoading, mutate } = useFrappeGetDocList(
         'Patient Appointment',
         {
             fields: ['*'],
-            // filters: [['patient', '=', patient || ""]],
+            filters
         }
     );
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
-    return (
-
-        {
-            data
-            //     && data.map(doc => (
-
-            //     { doc.name } - { doc.field1 }
-
-            // ))
-        }
-
-    );
+    return { data, isLoading, error, mutate };
 };
 
-export const getPatientAppointmentTypeList = (searchTerm: string | undefined) => {
-    const { data, error, isLoading } = useFrappeGetDocList(
+export const getPatientAppointmentTypeList = (searchTerm?: string) => {
+    const { data, error, isLoading, mutate } = useFrappeGetDocList(
         'Appointment Type',
         {
             fields: ['*'],
@@ -35,19 +31,6 @@ export const getPatientAppointmentTypeList = (searchTerm: string | undefined) =>
         }
     );
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
+    return { data, isLoading, error, mutate };
 
-    return (
-
-        {
-            data
-            //     && data.map(doc => (
-
-            //     { doc.name } - { doc.field1 }
-
-            // ))
-        }
-
-    );
 };

@@ -275,11 +275,11 @@ function Topbar() {
                     </div>
                 </div>
                 {/* <<<<<<<<<<----------date selection input, butttons, date---------->>>>>>>>>> */}
-                {/* <div className={`${location.pathname === "/home" ? "gap-[1.5vw]" : "opacity-0 pointer-events-none gap-[1vw]"} flex items-center font-medium text-lg leading-[21px] text-[#444648] whitespace-nowrap custom-transition`}>
-                    <div className='w-28 flex custom-transition'>
+                <div className={`${location.pathname === "/" ? "gap-[1.5vw]" : "opacity-0 pointer-events-none gap-[1vw]"} flex items-center font-medium text-lg leading-[21px] text-[#444648] whitespace-nowrap custom-transition`}>
+                    <div className='w-[104px] flex custom-transition'>
                         <label htmlFor='topbarDate' className="text-sm border border-solid border-[#DADCE0] text-[#888888] rounded px-1.5 py-1 custom-transition hover:bg-gray-100" onClick={() => ""}>
                             {topbarDate === moment(new Date).format("YYYY-MM-DD") ? "Today" : checkDay(new Date(topbarDate).getDay())}
-                            <span className='text-xs'>&#9660;</span>
+                            <i className="bx bx-chevron-down text-xs ml-1" />
                             <input id='topbarDate' type="date"
                                 value={topbarDate}
                                 onChange={(event) => {
@@ -293,16 +293,16 @@ function Topbar() {
                             />
                         </label>
                     </div>
-                    <div className="flex gap-[1vw] text-xl select-none">
-                        <div className='hover:bg-gray-300 flex justify-center items-center rounded-full w-6 h-6 cursor-pointer custom-transition' onClick={() => { changeDate(-1) }}>
-                            &lt;
+                    <div className="flex items-center gap-[1vw] text-xl select-none">
+                        <div className='bg-gray-200 hover:bg-gray-400 flex justify-center items-center rounded-full w-6 h-6 cursor-pointer custom-transition' onClick={() => { changeDate(-1) }}>
+                            <i className="bx bx-chevron-left text-2xl" />
                         </div>
-                        <div className='hover:bg-gray-300 rounded-full w-6 h-6 flex items-center justify-center cursor-pointer custom-transition' onClick={() => { changeDate(1) }}>
-                            &gt;
+                        <p className="w-24 text-center leading-4">{moment(topbarDate).format("DD MMM YY")}</p>
+                        <div className='bg-gray-200 hover:bg-gray-400 rounded-full w-6 h-6 flex items-center justify-center cursor-pointer custom-transition' onClick={() => { changeDate(1) }}>
+                            <i className="bx bx-chevron-right text-2xl" />
                         </div>
                     </div>
-                    <p className="w-36">{moment(topbarDate).format("Do MMM YYYY")}</p>
-                </div> */}
+                </div>
                 {/* <<<<<<<<<<----------serach and add add patient button---------->>>>>>>>>> */}
                 <div className={`flex items-center gap-[1vw] ml-auto`}>
                     <label htmlFor="search" className={`flex items-center max-w-[290px] bg-[#F2F2F2] rounded-[22px] overflow-hidden ml-[.5vw] ${isNotiOpen ? "w-[38px] px-[9px]" : "w-[15vw] px-3.5"} h-8 cursor-text relative custom-transition`}>
@@ -343,7 +343,19 @@ function Topbar() {
                     {/* user icon */}
                     <div className='cursor-pointer relative custom-transition' ref={profileRef}>
                         <div className='active:w-8 active:h-8 w-9 h-9 custom-transition' onClick={toggleProfile}>
-                            {profilePictureLoading === "Loading" ?
+                            {
+                                userDetails?.user_image ?
+                                    <img
+                                        className={`w-full h-full drop-shadow rounded-full custom-transition border ${isProfileOpen && "rounded-b-none"}`}
+                                        src={userDetails?.user_image}
+                                        alt=""
+                                        crossOrigin="anonymous"
+
+                                    />
+                                    :
+                                    <i className={`bx bxs-user text-5 leading-9 w-full h-full text-center text-[#a2c4ff]  bg-[#F2F4F9] drop-shadow rounded-full custom-transition ${isProfileOpen && "rounded-b-none"}`} />
+                            }
+                            {/* {profilePictureLoading === "Loading" ?
                                 <div className={`w-full h-full bg-neutral-200 animate-pulse drop-shadow rounded-full custom-transition ${isProfileOpen && "rounded-b-none"}`} >
                                 </div> :
                                 profilePictureLoading === "Missing" ?
@@ -359,7 +371,7 @@ function Topbar() {
                                         />
                                         :
                                         <i className={`bx bxs-user text-5 leading-9 w-full h-full text-center text-[#a2c4ff]  bg-[#F2F4F9] drop-shadow rounded-full custom-transition ${isProfileOpen && "rounded-b-none"}`} />
-                            }
+                            } */}
                         </div>
                         <div className={`flex flex-col bg-[#FFFFFF] min-h-full font-medium justify-center border absolute rounded-3xl -z-10 overflow-hidden custom-transition max-w-[250px] ${isProfileOpen ? "w-[20vw] shadow-xl top-[110%] -right-1/3 text-sm" : "w-full top-0 right-0 text-xs opacity-0 pointer-events-none"}`}>
                             <p className={`${isProfileOpen ? "" : "opacity-0"} px-4 py-2 flex justify-between items-center border-b hover:bg-gray-100 custom-transition `} onClick={() => { navigate("/reset-password") }}>Reset Password <i className='uil uil-unlock-alt text-xl' /></p>

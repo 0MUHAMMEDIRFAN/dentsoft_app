@@ -1,7 +1,7 @@
 import { useFrappeGetDocList } from 'frappe-react-sdk';
 
-export const getPatientTreatmentList = (searchTerm: string | undefined, patient: string | undefined) => {
-    const { data, error, isLoading } = useFrappeGetDocList(
+export const getPatientTreatmentList = (searchTerm?: string, patient?: string) => {
+    const { data, error, isLoading, mutate } = useFrappeGetDocList(
         'Clinical Procedure',
         {
             fields: ['*'],
@@ -9,19 +9,5 @@ export const getPatientTreatmentList = (searchTerm: string | undefined, patient:
         }
     );
 
-    if (isLoading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error.message}</p>;
-
-    return (
-
-        {
-            data
-            //     && data.map(doc => (
-
-            //     { doc.name } - { doc.field1 }
-
-            // ))
-        }
-
-    );
+    return { data, isLoading, error, mutate };
 };
