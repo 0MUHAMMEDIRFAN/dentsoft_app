@@ -109,8 +109,8 @@ function Overview() {
         }
     }
 
-    const { data:treatments } = getTreatmentList()
-    const { data:patientTreatments } = getPatientTreatmentList()
+    const { data: treatments } = getTreatmentList()
+    const { data: patientTreatments } = getPatientTreatmentList()
 
 
     const addDentalCondition = async () => {
@@ -523,11 +523,14 @@ function Overview() {
                                         pulseRows?.map((_, index) =>
                                             <li key={index} className={`${sidebarRightCollapse ? "max-xl:w-full" : ""} border border-solid border-[#EBEDF0] min-h-[48px] h-12 w-[48%] pl-5 rounded-lg flex items-center text-[#444648] font-medium animate-pulse bg-neutral-200`}></li>
                                         )
-                                        : treatmentsLoading === "Loaded" ? "No Treatments Found"
-                                            : <li className={`${sidebarRightCollapse ? "max-xl:pl-0" : ""} p-5 w-full flex flex-col items-center justify-center text-[#444648] font-medium text-xs gap-1 h-full`}>
-                                                <p>Error while Loading Treatments</p>
-                                                <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listAllTreatments()}>Try Again</button>
-                                            </li>
+                                        : <li className={`${sidebarRightCollapse ? "max-xl:pl-0" : ""} p-5 w-full flex flex-col items-center justify-center text-[#444648] font-medium text-xs gap-1 h-full`}>
+                                            {treatmentsLoading === "Loaded" ? <p>No Treatments Found</p>
+                                                : <>
+                                                    <p>Error while Loading Treatments</p>
+                                                    <button className='bg-[#4285F4] rounded h-5 px-2 font-medium text-white hover:bg-[#2070F5]' onClick={() => listAllTreatments()}>Try Again</button>
+                                                </>
+                                            }
+                                        </li>
                                 }
                             </ul>
                         </div>

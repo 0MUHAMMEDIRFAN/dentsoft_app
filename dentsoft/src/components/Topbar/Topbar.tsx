@@ -12,6 +12,7 @@ import moment from 'moment/moment'
 import { getSchemes } from '../../Api/SchemeApi'
 import { ApiContext } from '../../contexts/ApiContext'
 import { createReceptioninstNote, getReceptioninstNotes } from '../../Api/UserApi'
+import Input from '../Core/Input'
 
 function Topbar() {
     const { sidebarCollapse, setSidebarCollapse, setSidebarItems, searchValue, setSearchValue, addPatientForm, setAddPatientForm, isAddPatientOpen, setIsAddPatientOpen, patientButton, setPatientButton, selectedPatientId, setSelectedPatientId, handleEditPatient, selectedPatient, setSelectedPatient, selectPatient, deselectPatient, searchText, setSearchText, userDetails } = useContext(AppContext)
@@ -472,6 +473,9 @@ function Topbar() {
                                                         }}
                                                         onChange={(selected) => setAddPatientForm((prev) => ({ ...prev, [data.name]: selected.value, scheme: selected.label }))}
                                                         className="w-full h-full"
+                                                        classNames={{
+                                                            control: () => ""
+                                                        }}
                                                         classNamePrefix="select"
                                                         name={data.name}
                                                         value={{ value: addPatientForm[data.name], label: addPatientForm.scheme }}
@@ -479,22 +483,25 @@ function Topbar() {
                                                     />
 
                                                     :
-                                                    <div key={index} className='flex gap-[1vw] items-center rounded-md w-full h-full' >
-                                                        <input
-                                                            type={obj.type}
-                                                            name={data.name}
-                                                            className={`${(obj.type === "radio" || obj.type === "checkbox") ? "h-5 ml-5 w-5" : "focus:outline-none rounded-md transition-all w-full px-5 h-full min-w-[26px]"} ${data.name === "name" && "camelCase"}`}
-                                                            onChange={handleChange}
-                                                            onFocus={(event) => { obj.type === "date" && event.target.showPicker() }}
-                                                            value={obj.type === "radio" ? obj.text : obj.type === "checkbox" ? obj.text?.toLowerCase() : data.name === "ID" ? addPatientForm.patient_no || "* * * *" : obj.type === "date" ? moment(addPatientForm[data.name]).format("YYYY-MM-DD") === "Invalid date" ? this : moment(addPatientForm[data.name]).format("YYYY-MM-DD") : addPatientForm[data.name]}
-                                                            checked={obj.type === "radio" ? addPatientForm[data.name] === obj.text : obj.type === "checkbox" ? addPatientForm[data.name] && addPatientForm[data.name][obj.text?.toLowerCase()] : null}
-                                                            required={obj.type != "checkbox" ? data.required : false}
-                                                            disabled={data.name === "ID" || loading}
-                                                            pattern={data.pattern}
-                                                            title={data.title}
-                                                        />
-                                                        {obj.text && <span className='text-sm font-medium'>{obj.text}</span>}
-                                                    </div>
+                                                    <>
+
+                                                        <div key={index} className='flex gap-[1vw] items-center rounded-md w-full h-full' >
+                                                            <input
+                                                                type={obj.type}
+                                                                name={data.name}
+                                                                className={`${(obj.type === "radio" || obj.type === "checkbox") ? "h-5 ml-5 w-5" : "focus:outline-none rounded-md transition-all w-full px-5 h-full min-w-[26px]"} ${data.name === "name" && "camelCase"}`}
+                                                                onChange={handleChange}
+                                                                onFocus={(event) => { obj.type === "date" && event.target.showPicker() }}
+                                                                value={obj.type === "radio" ? obj.text : obj.type === "checkbox" ? obj.text?.toLowerCase() : data.name === "ID" ? addPatientForm.patient_no || "* * * *" : obj.type === "date" ? moment(addPatientForm[data.name]).format("YYYY-MM-DD") === "Invalid date" ? this : moment(addPatientForm[data.name]).format("YYYY-MM-DD") : addPatientForm[data.name]}
+                                                                checked={obj.type === "radio" ? addPatientForm[data.name] === obj.text : obj.type === "checkbox" ? addPatientForm[data.name] && addPatientForm[data.name][obj.text?.toLowerCase()] : null}
+                                                                required={obj.type != "checkbox" ? data.required : false}
+                                                                disabled={data.name === "ID" || loading}
+                                                                pattern={data.pattern}
+                                                                title={data.title}
+                                                            />
+                                                            {obj.text && <span className='text-sm font-medium'>{obj.text}</span>}
+                                                        </div>
+                                                    </>
                                             )
                                         })}
                                     </div>
