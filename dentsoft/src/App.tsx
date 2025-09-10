@@ -62,7 +62,7 @@ function App() {
 												{/* </> : <> */}
 													{/* {userDetails?.name === "admin" && <Route path="user-managment" element={<UserManagement />} exact />} */}
 													<Route path="user-managment" element={<UserManagement />} exact />
-													<Route path="report-and-analysis" element={<ReportAnalysis />} exact />
+													{/* <Route path="report-and-analysis" element={<ReportAnalysis />} exact /> */}
 													<Route path="schemes" element={<Schemes />} exact />
 													<Route path="treatments" element={<Treatments />} exact />
 												{/* </>} */}

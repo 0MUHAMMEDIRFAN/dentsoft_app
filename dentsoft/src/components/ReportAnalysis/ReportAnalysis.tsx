@@ -1,66 +1,72 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, PointElement, LineElement, Title } from 'chart.js';
 import { Doughnut, Line } from 'react-chartjs-2';
-import faker from 'faker';
 import moment from 'moment';
 import { getAppointmentsOverview, getDocumentsOverview, getPaymentsOverview, getTreatmentsOverview } from '../../Api/ChartApi';
 
-function ReportAnalysis() {
-    const [users, setUsers] = useState([])
-    const [usersLoading, setUsersLoading] = useState("Loaded")
-    const [documentOverview, setDocumentsOverview] = useState([])
+// Register ChartJS components once outside the component
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, ArcElement, Tooltip, Legend);
 
-    const listDocumentsOverview = async (startDate, endDate, doctorId, patientId, orderBy) => {
+function ReportAnalysis() {
+    const [, setDocumentsOverview] = useState([])
+
+    const listDocumentsOverview = async (startDate?: string, endDate?: string, doctorId?: string, patientId?: string, orderBy?: string) => {
         try {
             const result = await getDocumentsOverview(startDate, endDate, doctorId, patientId, orderBy)
-            setDocumentsOverview(result.data)
-            console.log(result.data)
+            if (result?.data) {
+                setDocumentsOverview(result.data)
+            }
         } catch (error) {
             console.log(error)
         }
     }
-    const listAppointmentsOverview = async (startDate, endDate, doctorId, patientId, orderBy, type, status, mode) => {
+    const listAppointmentsOverview = async (startDate?: string, endDate?: string, doctorId?: string, patientId?: string, orderBy?: string, type?: string, status?: string, mode?: string) => {
         try {
             const result = await getAppointmentsOverview(startDate, endDate, doctorId, patientId, orderBy, type, status, mode)
-            setDocumentsOverview(result.data)
-            console.log(result.data)
+            if (result?.data) {
+                setDocumentsOverview(result.data)
+            }
         } catch (error) {
             console.log(error)
         }
     }
-    const listPaymentsOverview = async (startDate, endDate, doctorId, patientId, orderBy, type, status, mode) => {
+    const listPaymentsOverview = async (startDate?: string, endDate?: string, doctorId?: string, patientId?: string, orderBy?: string, type?: string, status?: string, mode?: string) => {
         try {
             const result = await getPaymentsOverview(startDate, endDate, doctorId, patientId, orderBy, type, status, mode)
-            setDocumentsOverview(result.data)
-            console.log(result.data)
+            if (result?.data) {
+                setDocumentsOverview(result.data)
+            }
         } catch (error) {
             console.log(error)
         }
     }
-    const listTreatmentsOverview = async (startDate, endDate, doctorId, patientId, orderBy, type, status, mode) => {
+    const listTreatmentsOverview = async (startDate?: string, endDate?: string, doctorId?: string, patientId?: string, orderBy?: string, type?: string, status?: string) => {
         try {
             const result = await getTreatmentsOverview(startDate, endDate, doctorId, patientId, orderBy, type, status)
-            setDocumentsOverview(result.data)
-            console.log(result.data)
+            if (result?.data) {
+                setDocumentsOverview(result.data)
+            }
         } catch (error) {
             console.log(error)
         }
     }
 
-    ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, ArcElement, Tooltip, Legend);
-    const labels = ['01', '05', '10', '15', '20', '25', '30', "days"];
+    // Generate random data helper function
+    const generateRandomData = () => Math.floor(Math.random() * 80000);
+
+    const labels = ['01', '05', '10', '15', '20', '25', '30'];
     const LineData = {
         labels,
         datasets: [
             {
                 label: 'Production',
-                data: labels.map(() => faker.datatype.number({ min: 0, max: 80000 })),
+                data: labels.map(() => generateRandomData()),
                 borderColor: 'rgb(255, 99, 132)',
                 backgroundColor: 'rgba(255, 99, 132, 0.5)',
             },
             {
                 label: 'Collection',
-                data: labels.map(() => faker.datatype.number({ min: 0, max: 80000 })),
+                data: labels.map(() => generateRandomData()),
                 borderColor: 'rgb(53, 162, 235)',
                 backgroundColor: 'rgba(53, 162, 235, 0.5)',
             },
@@ -71,12 +77,12 @@ function ReportAnalysis() {
         responsive: true,
         plugins: {
             legend: {
-                position: 'top',
+                position: 'top' as const,
             },
         },
     };
     const DoughnutData = {
-        labels: [],
+        labels: ['Provider 1', 'Provider 2', 'Provider 3'],
         datasets: [
             {
                 label: '%',
@@ -224,7 +230,7 @@ function ReportAnalysis() {
                                 return (
                                     <tr key={index} className='box-border h-[60px]'>
                                         <td className='pl-9 max-w-[200px]'>{data.provider}</td>
-                                        <td>{moment(data.date).format("Do MMM YYY")}</td>
+                                        <td>{moment(data.date).format("Do MMM YYYY")}</td>
                                         <td>{data.production}</td>
                                         <td>{data.collection}</td>
                                         <td>{data.discount}</td>

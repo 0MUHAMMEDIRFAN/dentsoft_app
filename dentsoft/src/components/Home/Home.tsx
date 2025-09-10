@@ -403,7 +403,7 @@ function Home() {
                   <div key={index} className='px-7 mt-4 w-full'>
                     <p className='text-[#8A8A8A] leading-6 '>{data.head}</p>
                     <div className="min-w-[280px] h-[40px] border border-solid border-[#DFDFDF] rounded-md font-medium flex items-center relative text-[#373434] gap-[2vw]">
-                      {data.types.map((obj, index) => {
+                      {data?.types?.map((obj, index) => {
                         return (
                           obj.type === "select" ?
                             data.name === "appointment_type" ?
