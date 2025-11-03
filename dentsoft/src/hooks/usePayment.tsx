@@ -1,4 +1,4 @@
-import { useFrappeGetDocList } from 'frappe-react-sdk';
+import { useFrappeGetDocList, useFrappeCreateDoc, useFrappeUpdateDoc, useFrappeDeleteDoc } from 'frappe-react-sdk';
 
 export const getPaymentList = (searchTerm?: string, patient?: string, date?: string) => {
     const filters: any[] = [];
@@ -39,4 +39,28 @@ export const getPendingPaymentList = (patient?: string, date?: string) => {
         }
     );
     return { data, isLoading, error, mutate };
+};
+
+export const usePaymentOperations = () => {
+    const { createDoc: createPayment } = useFrappeCreateDoc();
+    const { updateDoc: updatePayment } = useFrappeUpdateDoc();
+    const { deleteDoc: deletePayment } = useFrappeDeleteDoc();
+
+    const addPayment = async (paymentData: any) => {
+        return await createPayment('Payment Entry', paymentData);
+    };
+
+    const editPayment = async (paymentName: string, paymentData: any) => {
+        return await updatePayment('Payment Entry', paymentName, paymentData);
+    };
+
+    const removePayment = async (paymentName: string) => {
+        return await deletePayment('Payment Entry', paymentName);
+    };
+
+    return {
+        addPayment,
+        editPayment,
+        removePayment
+    };
 };

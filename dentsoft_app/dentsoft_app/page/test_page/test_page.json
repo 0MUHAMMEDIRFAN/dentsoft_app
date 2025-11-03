@@ -1,0 +1,19 @@
+{
+ "content": null,
+ "creation": "2025-11-03 22:35:10.414453",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2025-11-03 22:37:30.608140",
+ "modified_by": "Administrator",
+ "module": "dentsoft App",
+ "name": "test-page",
+ "owner": "Administrator",
+ "page_name": "test-page",
+ "roles": [],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Testing Page Doctype"
+}

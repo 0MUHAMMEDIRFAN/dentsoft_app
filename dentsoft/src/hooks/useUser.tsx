@@ -1,4 +1,5 @@
-import { useFrappeGetDocList, useFrappeCreateDoc, useSearch } from 'frappe-react-sdk';
+import { useFrappeGetDocList, useFrappeCreateDoc, useFrappeUpdateDoc, useFrappeDeleteDoc, useSearch } from 'frappe-react-sdk';
+import { useCallback } from 'react';
 
 export const getUserList = (searchTerm?: string, active?: boolean, size: number = 15, role?: string) => {
     // Build filters array dynamically
@@ -9,17 +10,51 @@ export const getUserList = (searchTerm?: string, active?: boolean, size: number 
     if (active !== undefined) {
         filters.push(["enabled", "=", active]);
     }
+    if (role) {
+        filters.push(["role_profile_name", "=", role]);
+    }
 
-    const { data, error, isLoading ,mutate} = useFrappeGetDocList('User', {
-        fields: ["full_name", "email", "enabled", "phone", "gender", "user_type", "role_profile_name", "last_login"], // Optional: Specify fields to retrieve
-        // fields: ["*"], // Optional: Specify fields to retrieve
-        filters, // Optional: Add filters
-        limit: size, // Optional: Limit the number of results
-        orderBy: { field: "modified", order: "desc" } // Optional: Sort results
+    const { data, error, isLoading, mutate } = useFrappeGetDocList('User', {
+        fields: ["name", "full_name", "email", "enabled", "phone", "gender", "user_type", "role_profile_name", "last_login"],
+        filters,
+        limit: size,
+        orderBy: { field: "modified", order: "desc" }
     });
 
-    return ({ data, isLoading, error,mutate });
+    return ({ data, isLoading, error, mutate });
 };
+
+export const useUserOperations = () => {
+    const { createDoc, loading: createLoading } = useFrappeCreateDoc()
+    const { updateDoc, loading: updateLoading } = useFrappeUpdateDoc()
+    const { deleteDoc, loading: deleteLoading } = useFrappeDeleteDoc()
+
+    const addUser = useCallback(async (formData: any) => {
+        const result = await createDoc('User', formData)
+        return result
+    }, [createDoc])
+
+    const editUser = useCallback(async (id: string, formData: any) => {
+        const result = await updateDoc('User', id, formData)
+        return result
+    }, [updateDoc])
+
+    const removeUser = useCallback(async (id: string) => {
+        const result = await deleteDoc('User', id)
+        return result
+    }, [deleteDoc])
+
+    return {
+        addUser,
+        editUser,
+        removeUser,
+        loading: {
+            create: createLoading,
+            update: updateLoading,
+            delete: deleteLoading
+        }
+    }
+}
 
 export const searchUser = (searchTerm: string = "") => {
     const { data, error, isLoading, mutate } = useSearch('User', searchTerm, [], 20);
